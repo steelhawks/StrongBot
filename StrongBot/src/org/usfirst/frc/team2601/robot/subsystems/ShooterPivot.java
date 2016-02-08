@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /*
- *
+ 
  */
 public class ShooterPivot extends Subsystem {
     
