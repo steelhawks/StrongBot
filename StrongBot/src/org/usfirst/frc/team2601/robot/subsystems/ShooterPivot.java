@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-/**
+/*
  *
  */
 public class ShooterPivot extends Subsystem {
@@ -38,4 +38,3 @@ public class ShooterPivot extends Subsystem {
     	shooterPivotTalon.set(0);
     }
 }
-
