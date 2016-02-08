@@ -39,6 +39,8 @@ public class Constants {
     public int armUpTalon;
     public int scaleTalon;
     
+    public int shooterPivotTalon;
+    
     //Solenoids
     public int shooterSolenoidOn = 0;
     public int shooterSolenoidOff = 1;
@@ -48,14 +50,17 @@ public class Constants {
     public int rightSolenoidOff = 5;
     
     //Rollers
-    public int topRollerMultiplier = 1;
-    public int bottomRollerMultiplier = -1;
+    public int topRollerMultiplier = -1;
+    public int bottomRollerMultiplier = 1;
     
     public int rollerSpeed = 1;
     public int stopRollerSpeed = 0;
     
     public int scaleSpeed = 1;
    // public static int scaleMultiplier = 1;
+    public int shooterPivotUpMultiplier = 1;
+    public int shooterPivotDownMultiplier = -1;
+    public double shooterPivotSpeed = 1.0;
     
     //Joysticks
     public Joystick stick;
@@ -71,6 +76,10 @@ public class Constants {
 	public int continuousWheelsButton = 2;
 	public int switchScaleMotorsButton = 4;
     
+	/*public int pivotUpButton = 9;
+	public int pivotDownButton = 10;
+	public int pivotStop = 5;*/
+	
 	public boolean scale;//used to switch between the two motors
 	public boolean roll = false;//used to see if the rollers are continuous or not
 	public boolean shot = false;//used to see if piston is extended or nah
@@ -97,8 +106,10 @@ public class Constants {
 		    topRollerTalon = 5;
 		    bottomRollerTalon = 6;
 		    
-		    armUpTalon = 7;
-		    scaleTalon = 0;	    
+		    armUpTalon = 8;
+		    scaleTalon = 0;	
+		    
+		    shooterPivotTalon = 7;
 	   }
 	   else if(system == System_Type.Alpha){
 		    frontLeftTalon = 1;
@@ -108,10 +119,12 @@ public class Constants {
 		    backRightTalon = 6;
 		    
 		    topRollerTalon = 7;
-		    bottomRollerTalon = 8;
+		    bottomRollerTalon = 8; 
 		
 		    armUpTalon = 7;
-		    scaleTalon = 8;
+		    scaleTalon = 0;
+		    
+		    shooterPivotTalon = 8;
 	   }
     }
 }

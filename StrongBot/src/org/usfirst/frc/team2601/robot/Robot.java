@@ -11,6 +11,7 @@ import org.usfirst.frc.team2601.robot.commands.Drive;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2601.robot.subsystems.Scaler;
 import org.usfirst.frc.team2601.robot.subsystems.Shooter;
+import org.usfirst.frc.team2601.robot.subsystems.ShooterPivot;
 import org.usfirst.frc.team2601.robot.subsystems.ShooterRoller;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +30,7 @@ public class Robot extends IterativeRobot {
 	public static final Shooter shooter = new Shooter();
 	public static final ShooterRoller roller = new ShooterRoller();
 	public static final Scaler scaler = new Scaler();
+	public static final ShooterPivot shooterPivot = new ShooterPivot();
 	public static OI oi;
 
     Command autonomousCommand;
