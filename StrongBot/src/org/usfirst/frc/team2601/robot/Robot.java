@@ -14,8 +14,7 @@ import org.usfirst.frc.team2601.robot.subsystems.Shooter;
 import org.usfirst.frc.team2601.robot.subsystems.ShooterPivot;
 import org.usfirst.frc.team2601.robot.subsystems.ShooterRoller;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,11 +25,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
-	public static final Drivetrain drivetrain = new Drivetrain();
-	public static final Shooter shooter = new Shooter();
-	public static final ShooterRoller roller = new ShooterRoller();
-	public static final Scaler scaler = new Scaler();
-	public static final ShooterPivot shooterPivot = new ShooterPivot();
+	public static Drivetrain drivetrain = new Drivetrain();
+	public static Shooter shooter = new Shooter();
+	public static ShooterRoller roller = new ShooterRoller();
+	public static Scaler scaler = new Scaler();
+	public static ShooterPivot shooterPivot = new ShooterPivot();
 	public static OI oi;
 
     Command autonomousCommand;
@@ -46,10 +45,10 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		
 	    	oi = new OI();
-	        chooser = new SendableChooser();
+	/*        chooser = new SendableChooser();
 	        chooser.addDefault("Default Auto", new Drive());
 	//      chooser.addObject("My Auto", new MyAutoCommand());
-	        SmartDashboard.putData("Auto mode", chooser);
+	        SmartDashboard.putData("Auto mode", chooser);*/
 	        
 	        if(constants.PNEUMATICS_ON){
 	        	compressor = new Compressor();

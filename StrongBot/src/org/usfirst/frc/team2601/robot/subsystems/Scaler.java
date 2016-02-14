@@ -35,7 +35,7 @@ public class Scaler extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new Scale());
+    	//setDefaultCommand(new Scale());
     }
     public void manualArmUp(Joystick stick){
     	double move = -stick.getThrottle();

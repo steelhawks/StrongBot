@@ -25,6 +25,9 @@ public class Constants {
 	public enum Driver_Type {Arcade, Tank, Gamepad};
 	public Driver_Type driver = Driver_Type.Arcade;
 	
+	public enum System_Mode {All, DriveOnly, ShootOnly};  // pfw - added to toggle between shooting & driving for testing
+	public System_Mode mode = System_Mode.ShootOnly;
+	
 	public final boolean PNEUMATICS_ON = true;
 	
 	//Talons
@@ -42,18 +45,19 @@ public class Constants {
     public int shooterPivotTalon;
     
     //Solenoids
-    public int shooterSolenoidOn = 0;
-    public int shooterSolenoidOff = 1;
-    public int leftSolenoidOn = 2;
-    public int leftSolenoidOff = 3;
-    public int rightSolenoidOn = 4;
-    public int rightSolenoidOff = 5;
+    public int shooterSolenoidOn = 4;
+    public int shooterSolenoidOff = 5;
+    public int leftSolenoidOn = 0;
+    public int leftSolenoidOff = 1;
+    public int rightSolenoidOn = 2;
+    public int rightSolenoidOff = 3;
     
     //Rollers
     public int topRollerMultiplier = -1;
     public int bottomRollerMultiplier = 1;
     
     public int rollerSpeed = 1;
+    public double intakeSpeed = 0.5;
     public int stopRollerSpeed = 0;
     
     public int scaleSpeed = 1;
@@ -112,19 +116,19 @@ public class Constants {
 		    shooterPivotTalon = 7;
 	   }
 	   else if(system == System_Type.Alpha){
-		    frontLeftTalon = 1;
-		    backLeftTalon = 3;
+		    frontLeftTalon = 8;
+		    backLeftTalon = 10;
 		    
-		    frontRightTalon = 4;
-		    backRightTalon = 6;
+		    frontRightTalon = 7;
+		    backRightTalon = 11;
 		    
-		    topRollerTalon = 7;
-		    bottomRollerTalon = 8; 
+		    topRollerTalon = 5;
+		    bottomRollerTalon = 4; 
 		
-		    armUpTalon = 7;
+		    armUpTalon = 6;
 		    scaleTalon = 0;
 		    
-		    shooterPivotTalon = 8;
+		    shooterPivotTalon = 18;
 	   }
     }
 }

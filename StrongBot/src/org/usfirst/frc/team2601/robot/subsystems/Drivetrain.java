@@ -70,7 +70,7 @@ public class Drivetrain extends Subsystem {
 		logger.setup();
 
 		//ready shifting gearboxes
-		leftShift.set(HawkDoubleSolenoid.Value.kForward);
+		rightShift.set(HawkDoubleSolenoid.Value.kForward);
 		matchSolenoids();
 	}
     public void initDefaultCommand() {
@@ -96,14 +96,15 @@ public class Drivetrain extends Subsystem {
     public void shiftGears(){
     	if (rightShift.get() == HawkDoubleSolenoid.Value.kForward){
     		rightShift.set(HawkDoubleSolenoid.Value.kReverse);
-    	}else {
+    		System.out.println(rightShift.get());
+     	}else {
     		rightShift.set(HawkDoubleSolenoid.Value.kForward);
     	}
     	matchSolenoids();
     }
     private void matchSolenoids(){
     	leftShift.set(rightShift.get());
-    	logger.log(constants.logging);
+    	///logger.log(constants.logging);
     }
   /*//this variable locks in the BangBang method, allows it to set final distance once per successful run.
     private boolean bangBangStarted = false;

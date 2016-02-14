@@ -20,22 +20,28 @@ public class OI {
     //// CREATING BUTTONS
     
 	Constants constants = Constants.getInstance();
-	
+		
 	public OI(){
 		constants.stick = new Joystick(constants.joystickPort);
 	    constants.shooter = new Joystick(constants.secondJoystickPort);
+	
+	    //if (constants.mode == Constants.System_Mode.All ||
+	   // 		constants.mode == Constants.System_Mode.DriveOnly) {
+	    	Button shift = new JoystickButton(constants.stick, constants.shiftButton);
+	    	shift.whenPressed(new Shift());
+	    //}
 	    
-	    Button shift = new JoystickButton(constants.stick, constants.shiftButton);
-	    shift.whenPressed(new Shift());
+	    // (constants.mode == Constants.System_Mode.All ||
+	    	//	constants.mode == Constants.System_Mode.ShootOnly) {
+	    	Button triggerShooter = new JoystickButton(constants.shooter, constants.triggerShooterButton);
+	    	triggerShooter.whenPressed(new ShooterPiston());
 	    
-	    Button triggerShooter = new JoystickButton(constants.shooter, constants.triggerShooterButton);
-	    triggerShooter.whenPressed(new ShooterPiston());
+	    	Button continuousWheels = new JoystickButton(constants.shooter, constants.continuousWheelsButton);
+	    	continuousWheels.whenPressed(new ContinuousShoot());
 	    
-	    Button continuousWheels = new JoystickButton(constants.shooter, constants.continuousWheelsButton);
-	    continuousWheels.whenPressed(new ContinuousShoot());
-	    
-	    Button switchScaleMotors = new JoystickButton(constants.shooter, constants.switchScaleMotorsButton);
-	    switchScaleMotors.whenPressed(new ScaleBoolean());
+	    	Button switchScaleMotors = new JoystickButton(constants.shooter, constants.switchScaleMotorsButton);
+	    	switchScaleMotors.whenPressed(new ScaleBoolean());
+	   // }
 	    
 	   /* Button shooterPivotUp = new JoystickButton(constants.shooter, constants.pivotUpButton);
 	    shooterPivotUp.whenPressed(new ShooterPivotUp());

@@ -36,12 +36,16 @@ public class ShooterRoller extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new Shoot());
+    	//setDefaultCommand(new Shoot());
     }
     public void manualControlShooter(Joystick stick){
     	double move = stick.getY();
     	topRollerMotor.set(move*constants.topRollerMultiplier*constants.rollerSpeed);
     	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.rollerSpeed);
+    	if(stick.getY()<0){
+    		topRollerMotor.set(move*constants.topRollerMultiplier*constants.intakeSpeed);
+        	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
+    	}
     	logger.log(constants.logging);
     }
     public void spinRollers(){
