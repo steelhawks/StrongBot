@@ -1,12 +1,12 @@
 package org.usfirst.frc.team2601.robot;
 
-import org.usfirst.frc.team2601.robot.commands.ContinuousShoot;
-import org.usfirst.frc.team2601.robot.commands.ScaleBoolean;
-import org.usfirst.frc.team2601.robot.commands.Shift;
-import org.usfirst.frc.team2601.robot.commands.ShooterPiston;
-import org.usfirst.frc.team2601.robot.commands.ShooterPivotDown;
-import org.usfirst.frc.team2601.robot.commands.ShooterPivotStop;
-import org.usfirst.frc.team2601.robot.commands.ShooterPivotUp;
+import org.usfirst.frc.team2601.robot.commands.ReadGrip;
+import org.usfirst.frc.team2601.robot.commands.SlowDrive;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.Shift;
+import org.usfirst.frc.team2601.robot.commands.scaler.ScaleBoolean;
+import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousShoot;
+import org.usfirst.frc.team2601.robot.commands.shooter.ShooterPiston;
+import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -41,6 +41,12 @@ public class OI {
 	    
 	    	Button switchScaleMotors = new JoystickButton(constants.shooter, constants.switchScaleMotorsButton);
 	    	switchScaleMotors.whenPressed(new ScaleBoolean());
+	    	
+	    	Button slowDrivetrain = new JoystickButton(constants.stick, constants.slowDrivetrainButton);
+	    	slowDrivetrain.whileHeld(new SlowDrive());
+	    	
+	    	Button vision = new JoystickButton(constants.stick, constants.vision);
+	    	//vision.whenPressed(new ReadGrip());
 	   // }
 	    
 	   /* Button shooterPivotUp = new JoystickButton(constants.shooter, constants.pivotUpButton);

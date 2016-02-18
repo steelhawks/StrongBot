@@ -54,7 +54,7 @@ public class HawkCANTalon extends CANTalon implements HawkLoggable {
 	public ArrayList<String> getData() {
 		dataList.clear();
 		setData();
-		System.out.println(dataList);
+		//System.out.println(dataList);
 		return dataList;
 	}
 

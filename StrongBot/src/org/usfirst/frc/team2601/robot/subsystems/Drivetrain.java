@@ -4,12 +4,17 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.commands.Drive;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.ArcadeDriveSimple;
 import org.usfirst.frc.team2601.robot.util.*;
+
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -18,15 +23,23 @@ public class Drivetrain extends Subsystem {
     
 	Constants constants = Constants.getInstance();
 	
-	HawkCANTalon frontLeftMotor = new HawkCANTalon(constants.frontLeftTalon, "frontLeftMotor");
+	/*HawkCANTalon frontLeftMotor = new HawkCANTalon(constants.frontLeftTalon, "frontLeftMotor");
 	HawkCANTalon backLeftMotor = new HawkCANTalon(constants.backLeftTalon, "backLeftMotor");
 	HawkCANTalon frontRightMotor = new HawkCANTalon(constants.frontRightTalon, "frontRighMotor");
 	HawkCANTalon backRightMotor = new HawkCANTalon(constants.backRightTalon, "backRightMotor");
+	*/
+	CANTalon frontLeftMotor = new CANTalon(constants.frontLeftTalon);
+	CANTalon backLeftMotor = new CANTalon(constants.backLeftTalon);
+	CANTalon frontRightMotor = new CANTalon(constants.frontRightTalon);
+	CANTalon backRightMotor = new CANTalon(constants.backRightTalon);
 	
 	HawkDoubleSolenoid leftShift = new HawkDoubleSolenoid(constants.leftSolenoidOn,constants.leftSolenoidOff, "leftSolenoid");
 	HawkDoubleSolenoid rightShift = new HawkDoubleSolenoid(constants.rightSolenoidOn,constants.rightSolenoidOff, "rightSolenoid");
 	
-
+	
+	
+	Ultrasonic ultrasonic = new Ultrasonic(constants.ultrasonicInput, constants.ultrasonicOutput);
+	
 	RobotDrive drive = new RobotDrive(frontLeftMotor, frontRightMotor);
 	
 	PIDController leftSide;
@@ -35,6 +48,7 @@ public class Drivetrain extends Subsystem {
 	Encoder leftEncoder;
 	Encoder rightEncoder;
     
+	private boolean gear = true;
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
 	public HawkLogger logger;
@@ -56,10 +70,10 @@ public class Drivetrain extends Subsystem {
 		matchSolenoids();
 		*/
 
-		loggingList.add(frontLeftMotor);
-		loggingList.add(backLeftMotor);
-		loggingList.add(frontRightMotor);
-		loggingList.add(backRightMotor);
+	//	loggingList.add(frontLeftMotor);
+	//	loggingList.add(backLeftMotor);
+	//	loggingList.add(frontRightMotor);
+	//	loggingList.add(backRightMotor);
 		loggingList.add(leftShift);
 		loggingList.add(rightShift);
 		//loggingList.add(leftEncoder);
@@ -72,13 +86,19 @@ public class Drivetrain extends Subsystem {
 		//ready shifting gearboxes
 		rightShift.set(HawkDoubleSolenoid.Value.kForward);
 		matchSolenoids();
+		
+		//ready Ultrasonics
+		ultrasonic.setEnabled(true);
+		ultrasonic.setAutomaticMode(true);
+		
+		
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new Drive());
     }
-    private void matchMotors(HawkCANTalon leader, HawkCANTalon follower){
+    private void matchMotors(CANTalon leader, CANTalon follower){
     	follower.set(leader.get());
     	logger.log(constants.logging);
     }
@@ -87,24 +107,97 @@ public class Drivetrain extends Subsystem {
     	matchMotors(frontLeftMotor, backLeftMotor);
     	matchMotors(frontRightMotor, backRightMotor);
     	logger.log(constants.logging);
+    	constants.ultrasonicValue = ultrasonic.getRangeInches();
+        SmartDashboard.putNumber("UltrasonicDistance", constants.ultrasonicValue);
+    }
+    public void arcadeDriveX(Joystick stick){
+    	double move = stick.getY();
+    	double turn = stick.getX();
+    	arcadeDrive(move, turn);
     }
     public void arcadeDriveTwist(Joystick stick){
     	double move = stick.getY();
     	double rotate = stick.getTwist();
     	arcadeDrive(move,rotate);
     }
+    public void slowArcadeDriveTwist(Joystick stick){
+    	double move = stick.getY()*constants.slowDrivetrainSpeed;
+    	double rotate = stick.getTwist()*constants.slowDrivetrainSpeed;
+    	arcadeDrive(move,rotate);
+    }
     public void shiftGears(){
     	if (rightShift.get() == HawkDoubleSolenoid.Value.kForward){
     		rightShift.set(HawkDoubleSolenoid.Value.kReverse);
-    		System.out.println(rightShift.get());
+    		gear = false;
+    		
      	}else {
     		rightShift.set(HawkDoubleSolenoid.Value.kForward);
+    		gear = true;
     	}
     	matchSolenoids();
+    	SmartDashboard.putBoolean("Gear", gear);
     }
     private void matchSolenoids(){
     	leftShift.set(rightShift.get());
     	///logger.log(constants.logging);
+    }
+    public double getDistance(){
+    	return ultrasonic.getRangeInches();
+    }
+    //autonCommands
+    public void autonFastMoveForward(){
+    	frontLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonSlowMoveForward(){
+    	frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);	
+    }
+    public void autonFastMoveBackward(){
+    	frontLeftMotor.set(constants.autonBackward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonBackward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonBackward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonBackward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonSlowMoveBackward(){
+    	frontLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonTurnLeft(){
+    	frontLeftMotor.set(constants.autonBackward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonBackward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonTurnRight(){
+    	frontLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonBackward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonBackward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonSlowTurnLeft(){
+    	frontLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonSlowTurnRight(){
+    	frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+    }
+    public void autonStopMotors(){
+    	frontLeftMotor.set(0);
+    	backLeftMotor.set(0);
+    	frontRightMotor.set(0);
+    	backRightMotor.set(0);
     }
   /*//this variable locks in the BangBang method, allows it to set final distance once per successful run.
     private boolean bangBangStarted = false;

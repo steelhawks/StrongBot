@@ -1,13 +1,22 @@
 
 package org.usfirst.frc.team2601.robot;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+//import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
+import java.io.IOException;
 
 import org.usfirst.frc.team2601.robot.commands.Drive;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.AutonTest;
+import org.usfirst.frc.team2601.robot.subsystems.CombinedShooter;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2601.robot.subsystems.Scaler;
 import org.usfirst.frc.team2601.robot.subsystems.Shooter;
@@ -15,6 +24,7 @@ import org.usfirst.frc.team2601.robot.subsystems.ShooterPivot;
 import org.usfirst.frc.team2601.robot.subsystems.ShooterRoller;
 
 import edu.wpi.first.wpilibj.smartdashboard.*;
+import edu.wpi.first.wpilibj.vision.USBCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +40,9 @@ public class Robot extends IterativeRobot {
 	public static ShooterRoller roller = new ShooterRoller();
 	public static Scaler scaler = new Scaler();
 	public static ShooterPivot shooterPivot = new ShooterPivot();
+	//public static Camera camera = new Camera();
 	public static OI oi;
+	//public static CombinedShooter combinedshooter  = new CombinedShooter();
 
     Command autonomousCommand;
     SendableChooser chooser;
@@ -38,23 +50,38 @@ public class Robot extends IterativeRobot {
     Compressor compressor;
     
     Constants constants = Constants.getInstance();
+    
+    BuiltInAccelerometer accel;
+    double accelx = 0.0;
+    double accely = 0.0;
+    
+    CameraServer server = CameraServer.getInstance();
+     
+	//NetworkTable grip;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-		
 	    	oi = new OI();
+	    	
+	    	server.setQuality(90);
+	    	server.startAutomaticCapture("cam0");
+	    	
+	    	if(constants.PNEUMATICS_ON){
+	        	compressor = new Compressor();
+	        	compressor.start();
+	        
+	    	}
+	    	System.out.println("encoder");
+	    	
+	        accel = new BuiltInAccelerometer();
+	        
 	/*        chooser = new SendableChooser();
 	        chooser.addDefault("Default Auto", new Drive());
 	//      chooser.addObject("My Auto", new MyAutoCommand());
 	        SmartDashboard.putData("Auto mode", chooser);*/
-	        
-	        if(constants.PNEUMATICS_ON){
-	        	compressor = new Compressor();
-	        	compressor.start();
-	        }
-    	    
     }
 	
 	/**
@@ -63,7 +90,7 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
      */
     public void disabledInit(){
-
+    	
     }
 	
 	public void disabledPeriodic() {
@@ -80,8 +107,8 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
-        
+        autonomousCommand = new AutonTest();
+    	//autonomousCommand = (Command) chooser.getSelected();
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
@@ -102,6 +129,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        
     }
 
     public void teleopInit() {
@@ -109,7 +137,7 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (autonomousCommand != null) autonomousCommand.cancel();
+    	if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
     /**
@@ -117,6 +145,9 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("RoboRioAccelx", accel.getX());
+        SmartDashboard.putNumber("RoboRioAccely", accel.getY());
+        SmartDashboard.putNumber("RoboRioAccelz", accel.getZ());
     }
     
     /**

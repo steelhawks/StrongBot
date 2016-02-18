@@ -3,7 +3,7 @@ package org.usfirst.frc.team2601.robot.subsystems;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
-import org.usfirst.frc.team2601.robot.commands.Shoot;
+import org.usfirst.frc.team2601.robot.commands.shooter.Shoot;
 import org.usfirst.frc.team2601.robot.util.*;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -36,13 +36,13 @@ public class ShooterRoller extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	//setDefaultCommand(new Shoot());
+    	setDefaultCommand(new Shoot());
     }
-    public void manualControlShooter(Joystick stick){
-    	double move = stick.getY();
+    public void manualControlShooter(Joystick shooter){
+    	double move = shooter.getY();
     	topRollerMotor.set(move*constants.topRollerMultiplier*constants.rollerSpeed);
     	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.rollerSpeed);
-    	if(stick.getY()<0){
+    	if(shooter.getY()<0){
     		topRollerMotor.set(move*constants.topRollerMultiplier*constants.intakeSpeed);
         	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
     	}
@@ -53,6 +53,15 @@ public class ShooterRoller extends Subsystem {
    		bottomRollerMotor.set(constants.rollerSpeed*constants.bottomRollerMultiplier);
     	logger.log(constants.logging);
     }
+    public void autonShootRollers(){
+    	topRollerMotor.set(constants.autonShootSpeed*constants.topRollerMultiplier);
+    	bottomRollerMotor.set(constants.autonShootSpeed*constants.bottomRollerMultiplier);
+    }
+    public void autonIntakeRollers(){
+    	topRollerMotor.set(constants.autonIntakeSpeed*constants.topRollerMultiplier);
+    	bottomRollerMotor.set(constants.autonIntakeSpeed*constants.bottomRollerMultiplier);
+    }
+
     public void stopRollers(){
     	topRollerMotor.set(constants.stopRollerSpeed*constants.topRollerMultiplier);
    		bottomRollerMotor.set(constants.stopRollerSpeed*constants.bottomRollerMultiplier);

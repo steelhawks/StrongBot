@@ -3,7 +3,7 @@ package org.usfirst.frc.team2601.robot.subsystems;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
-import org.usfirst.frc.team2601.robot.commands.Scale;
+import org.usfirst.frc.team2601.robot.commands.scaler.Scale;
 import org.usfirst.frc.team2601.robot.util.*;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -35,7 +35,7 @@ public class Scaler extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	//setDefaultCommand(new Scale());
+    	setDefaultCommand(new Scale());
     }
     public void manualArmUp(Joystick stick){
     	double move = -stick.getThrottle();
