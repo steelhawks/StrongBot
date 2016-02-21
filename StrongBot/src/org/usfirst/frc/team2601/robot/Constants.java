@@ -39,23 +39,31 @@ public class Constants {
     public int backRightTalon;
     
     public int topRollerTalon;
-    public int bottomRollerTalon;
-    
-    public int armUpTalon;
-    public int scaleTalon;
-    
+    public int bottomRollerTalon;    
     public int shooterPivotTalon;
     
+    public int armUpTalon;
+    public int armExtendTalon;
+    public int armRetractTalon;
+    
     //Encoders
-    public int leftEncoderPortI;
-	public int rightEncoderPortI;
-	public int leftEncoderPortII;
-	public int rightEncoderPortII;
+    public int leftEncoderPortI = 0;
+	public int leftEncoderPortII = 1;
+	public int rightEncoderPortI = 2;
+	public int rightEncoderPortII = 3;
 	
 	//Ultrasonics
 	public int ultrasonicInput;
 	public int ultrasonicOutput;
 	public double ultrasonicValue;
+	
+	//Gyros
+	public int gyroAnalogPin;
+	public double gyroAngle = 0.0;
+	public double gyroRate = 0.0;
+	
+	//Potentiometers
+	public int shooterPivotPotAnalogPin = 1; 
 	
     //Solenoids
     public int shooterSolenoidOn = 4;
@@ -70,14 +78,15 @@ public class Constants {
     public int bottomRollerMultiplier = 1;
     
     public int rollerSpeed = 1;
-    public double intakeSpeed = 0.5;
-    public int stopRollerSpeed = 0;
+    public double intakeSpeed = 1;
     
-    public int scaleSpeed = 1;
+    
+    public double scaleSpeed = 1.0;
+    public double armUpSpeed = 0.5;
     //public static int scaleMultiplier = 1;
     public int shooterPivotUpMultiplier = 1;
     public int shooterPivotDownMultiplier = -1;
-    public double shooterPivotSpeed = 0.5;
+    public double shooterPivotSpeed = 1.0;
     public double slowDrivetrainSpeed = 0.5;
     
   //autonomous commands and multipliers
@@ -113,15 +122,17 @@ public class Constants {
     public int vision = 4;
     
 	//Operator Buttons
-	public int triggerShooterButton = 1;
 	public int continuousWheelsButton = 2;
+	public int pistonButton = 3;
 	public int switchScaleMotorsButton = 4;
-	
+	public int stopShootButton = 5;
+	public int triggerShooterButton = 1; 
 	/*public int pivotUpButton = 9;
 	public int pivotDownButton = 10;
 	public int pivotStop = 5;*/
 	
-	public boolean scale;//used to switch between the two motors
+	//variables that shouldn't be in constants
+	//public boolean scale;//used to switch between the two motors
 	public boolean roll = false;//used to see if the rollers are continuous or not
 	public boolean shot = false;//used to see if piston is extended or nah
 	
@@ -146,30 +157,37 @@ public class Constants {
 		    
 		    topRollerTalon = 5;
 		    bottomRollerTalon = 6;
-		    
-		    armUpTalon = 8;
-		    scaleTalon = 0;	
-		    
 		    shooterPivotTalon = 7;
+		    
+		    armUpTalon = 1;//8
+		    armExtendTalon = 0;
+		    armRetractTalon = 2;//12
 		    
 		    ultrasonicInput = 4;
 		    ultrasonicOutput = 5;
 		    
+		    gyroAnalogPin = 0;
+		    
 	   }
 	   else if(system == System_Type.Alpha){
-		    frontLeftTalon = 8;
-		    backLeftTalon = 10;
+		   frontLeftTalon = 10;
+		    backLeftTalon = 20;
 		    
-		    frontRightTalon = 7;
-		    backRightTalon = 11;
+		    frontRightTalon = 3;
+		    backRightTalon = 4;
 		    
 		    topRollerTalon = 5;
-		    bottomRollerTalon = 4; 
-		
-		    armUpTalon = 6;
-		    scaleTalon = 0;
+		    bottomRollerTalon = 6;
+		    shooterPivotTalon = 7;
 		    
-		    shooterPivotTalon = 18;
-	   }
+		    armUpTalon = 1;//8
+		    armExtendTalon = 0;
+		    armRetractTalon = 2;//12
+		    
+		    ultrasonicInput = 4;
+		    ultrasonicOutput = 5;
+		    
+		    gyroAnalogPin = 0;
+			   }
     }
 }

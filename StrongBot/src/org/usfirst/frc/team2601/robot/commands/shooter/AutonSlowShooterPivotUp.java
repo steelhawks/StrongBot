@@ -12,7 +12,8 @@ public class AutonSlowShooterPivotUp extends Command {
     public AutonSlowShooterPivotUp(double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterPivot);
+    	//requires(Robot.shooterPivot);
+    	requires(Robot.combinedshooter);
     	setTimeout(timeout);
     }
 
@@ -22,7 +23,8 @@ public class AutonSlowShooterPivotUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooterPivot.autonSlowShooterPivotUp();
+    	//Robot.shooterPivot.autonSlowShooterPivotUp();
+    	Robot.combinedshooter.autonSlowShooterPivotUp();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,7 +34,8 @@ public class AutonSlowShooterPivotUp extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooterPivot.shooterPivotStop();
+    	//Robot.shooterPivot.shooterPivotStop();
+    	Robot.combinedshooter.shooterPivotStop();
     }
 
     // Called when another command which requires one or more of the same

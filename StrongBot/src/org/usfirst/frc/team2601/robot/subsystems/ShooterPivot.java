@@ -4,6 +4,7 @@ import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.commands.shooter.ManualShooterPivot;
 import org.usfirst.frc.team2601.robot.util.TalonEncoder;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,7 +25,8 @@ public class ShooterPivot extends Subsystem {
 	CANTalon shooterPivotTalon = new CANTalon(constants.shooterPivotTalon);
 	
 	TalonEncoder shooterPivotEncoder = new TalonEncoder(shooterPivotTalon);
-
+	
+	
 	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

@@ -12,7 +12,7 @@ public class AutonPistonShoot extends Command {
     public AutonPistonShoot(double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	requires(Robot.combinedshooter);
     	setTimeout(timeout);
     }
 
@@ -22,7 +22,7 @@ public class AutonPistonShoot extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooter.shootPiston();
+    	Robot.combinedshooter.shootPiston();
     }
 
     // Make this return true when this Command no longer needs to run execute()

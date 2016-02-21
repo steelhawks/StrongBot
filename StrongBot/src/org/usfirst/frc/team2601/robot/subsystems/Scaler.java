@@ -17,16 +17,18 @@ public class Scaler extends Subsystem {
 	Constants constants = Constants.getInstance();
 	
 	HawkCANTalon armUpMotor = new HawkCANTalon(constants.armUpTalon, "armUpMotor");
-	HawkCANTalon armScaleMotor = new HawkCANTalon(constants.scaleTalon, "armScaleMotor");
-	
+	HawkCANTalon armExtendMotor = new HawkCANTalon(constants.armExtendTalon, "armExtendMotor");
+	HawkCANTalon armRetractMotor = new HawkCANTalon(constants.armRetractTalon, "armRetractMotor");
 
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
 	public HawkLogger logger;
+	private static boolean scale = true;
 	
 	public Scaler(){
 		loggingList.add(armUpMotor);
-		loggingList.add(armScaleMotor);
+		loggingList.add(armExtendMotor);
+		loggingList.add(armRetractMotor);
 
 		//ready logger
 		logger = new HawkLogger("scaler", loggingList);
@@ -37,21 +39,31 @@ public class Scaler extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new Scale());
     }
-    public void manualArmUp(Joystick stick){
-    	double move = -stick.getThrottle();
-    	if(constants.scale){
-    		armUpMotor.set(move*constants.scaleSpeed/*constants.scaleMultiplier*/);
+    public void scaleBoolean(){
+    	scale = !scale;
+    }
+    public void manualScale(Joystick stick){
+    	double move = stick.getTwist();
+    	if(scale){
+    		armExtendMotor.set(move*constants.scaleSpeed/*constants.scaleMultiplier*/);
     	}else{
-    		armScaleMotor.set(move*constants.scaleSpeed/*constants.scaleMultiplier*/);
+    		armRetractMotor.set(-move*constants.scaleSpeed/*constants.scaleMultiplier*/);
     	}
     	logger.log(constants.logging);
+    }
+    public void manualArmUp(Joystick stick){
+    	double move = stick.getThrottle();
+    	armUpMotor.set(move*constants.armUpSpeed);
     }
     public void armUp(){
     	armUpMotor.set(constants.scaleSpeed/*constants.scaleMultiplier*/);
     	logger.log(constants.logging);
     }
+    public void armExtend(){
+    	armExtendMotor.set(constants.scaleSpeed);
+    }
     public void armScale(){
-    	armScaleMotor.set(constants.scaleSpeed/*constants.scaleMultiplier*/);
+    	armRetractMotor.set(constants.scaleSpeed/*constants.scaleMultiplier*/);
     	logger.log(constants.logging);
     }
     

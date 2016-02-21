@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2601.robot.commands.shooter;
+package org.usfirst.frc.team2601.robot.commands;
 
 import org.usfirst.frc.team2601.robot.Robot;
 
@@ -7,14 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class AutonRollerIntake extends Command {
-
-    public AutonRollerIntake(double timeout) {
+public class PIDdrive extends Command {
+	double leftSet;
+	double rightSet;
+	boolean finished = false;
+    public PIDdrive(double leftSet, double rightSet) {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	//requires(Robot.roller);
-    	requires(Robot.combinedshooter);
-    	setTimeout(timeout);
+    	this.leftSet = leftSet;
+    	this.rightSet = rightSet;
+        requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
@@ -23,19 +24,16 @@ public class AutonRollerIntake extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.roller.autonIntakeRollers();
-    	Robot.combinedshooter.autonIntakeRollers();
+    	//finished = Robot.drivetrain.runPID(leftSet, rightSet);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut();
+        return finished;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	//Robot.roller.stopRollers();
-    	Robot.combinedshooter.stopRollers();
     }
 
     // Called when another command which requires one or more of the same

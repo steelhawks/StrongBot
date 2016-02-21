@@ -7,13 +7,17 @@ import org.usfirst.frc.team2601.robot.commands.Drive;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.ArcadeDriveSimple;
 import org.usfirst.frc.team2601.robot.util.*;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -23,22 +27,26 @@ public class Drivetrain extends Subsystem {
     
 	Constants constants = Constants.getInstance();
 	
-	/*HawkCANTalon frontLeftMotor = new HawkCANTalon(constants.frontLeftTalon, "frontLeftMotor");
+	HawkCANTalon frontLeftMotor = new HawkCANTalon(constants.frontLeftTalon, "frontLeftMotor");
 	HawkCANTalon backLeftMotor = new HawkCANTalon(constants.backLeftTalon, "backLeftMotor");
 	HawkCANTalon frontRightMotor = new HawkCANTalon(constants.frontRightTalon, "frontRighMotor");
 	HawkCANTalon backRightMotor = new HawkCANTalon(constants.backRightTalon, "backRightMotor");
-	*/
-	CANTalon frontLeftMotor = new CANTalon(constants.frontLeftTalon);
+	
+	/*CANTalon frontLeftMotor = new CANTalon(constants.frontLeftTalon);
 	CANTalon backLeftMotor = new CANTalon(constants.backLeftTalon);
 	CANTalon frontRightMotor = new CANTalon(constants.frontRightTalon);
 	CANTalon backRightMotor = new CANTalon(constants.backRightTalon);
-	
+	*/
 	HawkDoubleSolenoid leftShift = new HawkDoubleSolenoid(constants.leftSolenoidOn,constants.leftSolenoidOff, "leftSolenoid");
 	HawkDoubleSolenoid rightShift = new HawkDoubleSolenoid(constants.rightSolenoidOn,constants.rightSolenoidOff, "rightSolenoid");
 	
 	
 	
 	Ultrasonic ultrasonic = new Ultrasonic(constants.ultrasonicInput, constants.ultrasonicOutput);
+	double ultrasonicValue;
+	Gyro gyro = new AnalogGyro(constants.gyroAnalogPin);
+	double gyroAngle;
+	double gyroRate;
 	
 	RobotDrive drive = new RobotDrive(frontLeftMotor, frontRightMotor);
 	
@@ -52,23 +60,27 @@ public class Drivetrain extends Subsystem {
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
 	public HawkLogger logger;
-		
+	
 	// Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public Drivetrain(){
-	/*	leftSide = new PIDController(constants.kP, constants.kI, constants.kD, constants.kF, leftEncoder, frontLeftMotor);
-		rightSide = new PIDController(constants.kP,constants.kI, constants.kD, constants.kF, rightEncoder,frontRightMotor);
+		try{
+			leftEncoder = new Encoder(constants.leftEncoderPortI, constants.leftEncoderPortII, false, EncodingType.k4X);
+			rightEncoder = new Encoder(constants.rightEncoderPortI, constants.rightEncoderPortII, true, EncodingType.k4X);
+		//try catch
+			leftSide = new PIDController(constants.kP, constants.kI, constants.kD, constants.kF, leftEncoder, frontLeftMotor);
+			rightSide = new PIDController(constants.kP,constants.kI, constants.kD, constants.kF, rightEncoder,frontRightMotor);
+		} catch(Exception e){
+			System.out.println("Error initializing encoders; Check if encoders and PIDs are plugged in to RIO"); 
+		}
 		leftSide.setPercentTolerance(constants.PIDtolerance);
 		rightSide.setPercentTolerance(constants.PIDtolerance);
 		
 		//ready encoders
 	    leftEncoder.setDistancePerPulse(constants.distancePerPulse);
 		rightEncoder.setDistancePerPulse(constants.distancePerPulse);
+
 		
-		//ready shifting gearboxes
-		leftShift.set(DoubleSolenoid.Value.kForward);
-		matchSolenoids();
-		*/
 
 	//	loggingList.add(frontLeftMotor);
 	//	loggingList.add(backLeftMotor);
@@ -91,24 +103,35 @@ public class Drivetrain extends Subsystem {
 		ultrasonic.setEnabled(true);
 		ultrasonic.setAutomaticMode(true);
 		
+		gyro.reset();
 		
+		frontLeftMotor.setSafetyEnabled(false);
+		frontRightMotor.setSafetyEnabled(false);
+		backLeftMotor.setSafetyEnabled(false);
+		backRightMotor.setSafetyEnabled(false);
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new Drive());
     }
-    private void matchMotors(CANTalon leader, CANTalon follower){
+    private void matchMotors(HawkCANTalon leader, HawkCANTalon follower){
     	follower.set(leader.get());
-    	logger.log(constants.logging);
+    	//logger.log(constants.logging);
     }
     public void arcadeDrive(double move, double rotate){
     	drive.arcadeDrive(move, rotate);
     	matchMotors(frontLeftMotor, backLeftMotor);
     	matchMotors(frontRightMotor, backRightMotor);
-    	logger.log(constants.logging);
-    	constants.ultrasonicValue = ultrasonic.getRangeInches();
-        SmartDashboard.putNumber("UltrasonicDistance", constants.ultrasonicValue);
+        //logger.log(constants.logging);
+    	
+    	gyroRate = gyro.getRate();
+    	gyroAngle = gyro.getAngle();
+    	SmartDashboard.putNumber("Gyro Rate", gyroRate);
+    	SmartDashboard.putNumber("Gyro Angle", gyroAngle);
+    	
+    	ultrasonicValue = ultrasonic.getRangeInches();
+        SmartDashboard.putNumber("UltrasonicDistance", ultrasonicValue);
     }
     public void arcadeDriveX(Joystick stick){
     	double move = stick.getY();
@@ -248,7 +271,7 @@ public class Drivetrain extends Subsystem {
     }
     
     //End bangBang autonomous
-    
+ 
     private boolean PIDinitialized = false;
     
     public void setBothPID(double setpoint){

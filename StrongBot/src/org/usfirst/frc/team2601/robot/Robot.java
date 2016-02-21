@@ -9,13 +9,17 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 //import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.networktables2.type.NumberArray;
 
 import java.io.IOException;
 
 import org.usfirst.frc.team2601.robot.commands.Drive;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.AutonTest;
+import org.usfirst.frc.team2601.robot.subsystems.Camera;
 import org.usfirst.frc.team2601.robot.subsystems.CombinedShooter;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2601.robot.subsystems.Scaler;
@@ -36,13 +40,13 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 public class Robot extends IterativeRobot {
 
 	public static Drivetrain drivetrain = new Drivetrain();
-	public static Shooter shooter = new Shooter();
-	public static ShooterRoller roller = new ShooterRoller();
+	//public static Shooter shooter = new Shooter();
+	//public static ShooterRoller roller = new ShooterRoller();
+	//public static ShooterPivot shooterPivot = new ShooterPivot();
 	public static Scaler scaler = new Scaler();
-	public static ShooterPivot shooterPivot = new ShooterPivot();
-	//public static Camera camera = new Camera();
+    public static Camera camera = new Camera();
 	public static OI oi;
-	//public static CombinedShooter combinedshooter  = new CombinedShooter();
+	public static CombinedShooter combinedshooter  = new CombinedShooter();
 
     Command autonomousCommand;
     SendableChooser chooser;
@@ -56,8 +60,6 @@ public class Robot extends IterativeRobot {
     double accely = 0.0;
     
     CameraServer server = CameraServer.getInstance();
-     
-	//NetworkTable grip;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -77,7 +79,7 @@ public class Robot extends IterativeRobot {
 	    	System.out.println("encoder");
 	    	
 	        accel = new BuiltInAccelerometer();
-	        
+
 	/*        chooser = new SendableChooser();
 	        chooser.addDefault("Default Auto", new Drive());
 	//      chooser.addObject("My Auto", new MyAutoCommand());
@@ -86,7 +88,8 @@ public class Robot extends IterativeRobot {
 	
 	/**
      * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
+     * You can use i
+     * t to reset any subsystem information you want to clear when
 	 * the robot is disabled.
      */
     public void disabledInit(){
@@ -132,7 +135,7 @@ public class Robot extends IterativeRobot {
         
     }
 
-    public void teleopInit() {
+	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
@@ -147,7 +150,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("RoboRioAccelx", accel.getX());
         SmartDashboard.putNumber("RoboRioAccely", accel.getY());
-        SmartDashboard.putNumber("RoboRioAccelz", accel.getZ());
+        SmartDashboard.putNumber("RoboRioAccelz", accel.getZ());       
     }
     
     /**

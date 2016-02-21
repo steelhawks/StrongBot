@@ -3,7 +3,6 @@ package org.usfirst.frc.team2601.robot.subsystems;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
-import org.usfirst.frc.team2601.robot.commands.shooter.Shoot;
 import org.usfirst.frc.team2601.robot.util.*;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -36,7 +35,7 @@ public class ShooterRoller extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new Shoot());
+    	//setDefaultCommand(new ManualShoot());
     }
     public void manualControlShooter(Joystick shooter){
     	double move = shooter.getY();
@@ -46,12 +45,12 @@ public class ShooterRoller extends Subsystem {
     		topRollerMotor.set(move*constants.topRollerMultiplier*constants.intakeSpeed);
         	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
     	}
-    	logger.log(constants.logging);
+    	//logger.log(constants.logging);
     }
     public void spinRollers(){
    		topRollerMotor.set(constants.rollerSpeed*constants.topRollerMultiplier);
    		bottomRollerMotor.set(constants.rollerSpeed*constants.bottomRollerMultiplier);
-    	logger.log(constants.logging);
+    	//logger.log(constants.logging);
     }
     public void autonShootRollers(){
     	topRollerMotor.set(constants.autonShootSpeed*constants.topRollerMultiplier);
@@ -63,9 +62,9 @@ public class ShooterRoller extends Subsystem {
     }
 
     public void stopRollers(){
-    	topRollerMotor.set(constants.stopRollerSpeed*constants.topRollerMultiplier);
-   		bottomRollerMotor.set(constants.stopRollerSpeed*constants.bottomRollerMultiplier);
-    	logger.log(constants.logging);
+    	topRollerMotor.set(0);
+   		bottomRollerMotor.set(0);
+    	//logger.log(constants.logging);
     }
 
 }

@@ -25,6 +25,7 @@ public class Scale extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.scaler.manualArmUp(constants.shooter);
+    	Robot.scaler.manualScale(constants.shooter);
     }
 
     // Make this return true when this Command no longer needs to run execute()

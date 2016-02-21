@@ -2,6 +2,7 @@ package org.usfirst.frc.team2601.robot.commands.scaler;
 
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.Robot;
+import org.usfirst.frc.team2601.robot.subsystems.Scaler;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -24,12 +25,7 @@ public class ScaleBoolean extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	/*if(constants.scale == true){
-    		Robot.scaler.manualControlScaler(constants.shooter);
-    	}
-    	if(constants.scale == false){
-    		Robot.scaler.manualArmUp(constants.shooter); 
-    	}*/
+    	Robot.scaler.scaleBoolean();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +35,6 @@ public class ScaleBoolean extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	constants.scale = !constants.scale;
     }
 
     // Called when another command which requires one or more of the same
