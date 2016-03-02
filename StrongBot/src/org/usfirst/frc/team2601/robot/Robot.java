@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team2601.robot;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
@@ -19,6 +21,9 @@ import java.io.IOException;
 
 import org.usfirst.frc.team2601.robot.commands.Drive;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.AutonTest;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBar;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootHighGoal;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.GyroForward;
 import org.usfirst.frc.team2601.robot.subsystems.Camera;
 import org.usfirst.frc.team2601.robot.subsystems.CombinedShooter;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
@@ -59,6 +64,8 @@ public class Robot extends IterativeRobot {
     double accelx = 0.0;
     double accely = 0.0;
     
+	//AnalogPotentiometer pot = new AnalogPotentiometer(constants.shooterPivotPotAnalogPin,360,60);
+    
     CameraServer server = CameraServer.getInstance();
 
     /**
@@ -74,22 +81,22 @@ public class Robot extends IterativeRobot {
 	    	if(constants.PNEUMATICS_ON){
 	        	compressor = new Compressor();
 	        	compressor.start();
-	        
 	    	}
 	    	System.out.println("encoder");
 	    	
 	        accel = new BuiltInAccelerometer();
 
-	/*        chooser = new SendableChooser();
-	        chooser.addDefault("Default Auto", new Drive());
-	//      chooser.addObject("My Auto", new MyAutoCommand());
-	        SmartDashboard.putData("Auto mode", chooser);*/
+	        chooser = new SendableChooser();
+	        chooser.addDefault("AutonTest", new AutonTest());
+	        chooser.addObject("Gyro Forward", new GyroForward());
+	        chooser.addObject("LowBarCross", new CrossLowBar());
+	        chooser.addObject("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
+	        SmartDashboard.putData("Auto mode", chooser);
     }
 	
 	/**
      * This function is called once each time the robot enters Disabled mode.
-     * You can use i
-     * t to reset any subsystem information you want to clear when
+     * You can use it to reset any subsystem information you want to clear when
 	 * the robot is disabled.
      */
     public void disabledInit(){
@@ -110,7 +117,10 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-        autonomousCommand = new AutonTest();
+    	Robot.drivetrain.gyro.reset();
+    	
+    	autonomousCommand = new CrossLowBarShootHighGoal();
+           
     	//autonomousCommand = (Command) chooser.getSelected();
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
@@ -151,6 +161,9 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("RoboRioAccelx", accel.getX());
         SmartDashboard.putNumber("RoboRioAccely", accel.getY());
         SmartDashboard.putNumber("RoboRioAccelz", accel.getZ());       
+        
+      //  SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", pot.get());
+        //SmartDashboard.putNumber("PotentiometerPidInppt", pot.pidGet());
     }
     
     /**

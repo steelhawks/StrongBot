@@ -4,17 +4,15 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.commands.Drive;
-import org.usfirst.frc.team2601.robot.commands.drivetrain.ArcadeDriveSimple;
 import org.usfirst.frc.team2601.robot.util.*;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.GyroBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -32,21 +30,16 @@ public class Drivetrain extends Subsystem {
 	HawkCANTalon frontRightMotor = new HawkCANTalon(constants.frontRightTalon, "frontRighMotor");
 	HawkCANTalon backRightMotor = new HawkCANTalon(constants.backRightTalon, "backRightMotor");
 	
-	/*CANTalon frontLeftMotor = new CANTalon(constants.frontLeftTalon);
-	CANTalon backLeftMotor = new CANTalon(constants.backLeftTalon);
-	CANTalon frontRightMotor = new CANTalon(constants.frontRightTalon);
-	CANTalon backRightMotor = new CANTalon(constants.backRightTalon);
-	*/
 	HawkDoubleSolenoid leftShift = new HawkDoubleSolenoid(constants.leftSolenoidOn,constants.leftSolenoidOff, "leftSolenoid");
 	HawkDoubleSolenoid rightShift = new HawkDoubleSolenoid(constants.rightSolenoidOn,constants.rightSolenoidOff, "rightSolenoid");
 	
-	
+	public Gyro gyro = new AnalogGyro(constants.gyroAnalogPin);
+	double gyroAngle;
+	double gyroRate;
+    double Kp = 0.03;
 	
 	Ultrasonic ultrasonic = new Ultrasonic(constants.ultrasonicInput, constants.ultrasonicOutput);
 	double ultrasonicValue;
-	Gyro gyro = new AnalogGyro(constants.gyroAnalogPin);
-	double gyroAngle;
-	double gyroRate;
 	
 	RobotDrive drive = new RobotDrive(frontLeftMotor, frontRightMotor);
 	
@@ -80,8 +73,7 @@ public class Drivetrain extends Subsystem {
 	    leftEncoder.setDistancePerPulse(constants.distancePerPulse);
 		rightEncoder.setDistancePerPulse(constants.distancePerPulse);
 
-		
-
+		//gyro.reset();
 	//	loggingList.add(frontLeftMotor);
 	//	loggingList.add(backLeftMotor);
 	//	loggingList.add(frontRightMotor);
@@ -102,9 +94,7 @@ public class Drivetrain extends Subsystem {
 		//ready Ultrasonics
 		ultrasonic.setEnabled(true);
 		ultrasonic.setAutomaticMode(true);
-		
-		gyro.reset();
-		
+				
 		frontLeftMotor.setSafetyEnabled(false);
 		frontRightMotor.setSafetyEnabled(false);
 		backLeftMotor.setSafetyEnabled(false);
@@ -125,13 +115,14 @@ public class Drivetrain extends Subsystem {
     	matchMotors(frontRightMotor, backRightMotor);
         //logger.log(constants.logging);
     	
-    	gyroRate = gyro.getRate();
-    	gyroAngle = gyro.getAngle();
-    	SmartDashboard.putNumber("Gyro Rate", gyroRate);
-    	SmartDashboard.putNumber("Gyro Angle", gyroAngle);
-    	
     	ultrasonicValue = ultrasonic.getRangeInches();
         SmartDashboard.putNumber("UltrasonicDistance", ultrasonicValue);
+    
+    	//gyro.reset();
+    	gyroAngle = gyro.getAngle();
+    	SmartDashboard.putNumber("Gyro Angle", gyroAngle);
+    	gyroRate = gyro.getRate();
+    	SmartDashboard.putNumber("Gyro Rate", gyroRate);
     }
     public void arcadeDriveX(Joystick stick){
     	double move = stick.getY();
@@ -160,6 +151,9 @@ public class Drivetrain extends Subsystem {
     	matchSolenoids();
     	SmartDashboard.putBoolean("Gear", gear);
     }
+    public void gyroReset(){
+    	gyro.reset();
+    }
     private void matchSolenoids(){
     	leftShift.set(rightShift.get());
     	///logger.log(constants.logging);
@@ -168,6 +162,12 @@ public class Drivetrain extends Subsystem {
     	return ultrasonic.getRangeInches();
     }
     //autonCommands
+    public void autonForwardGyro(){
+    	//gyro.reset();
+    	gyroAngle = gyro.getAngle();
+    	drive.drive(-0.5, -gyroAngle * Kp);
+    	Timer.delay(0.003);
+    }
     public void autonFastMoveForward(){
     	frontLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
     	backLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);

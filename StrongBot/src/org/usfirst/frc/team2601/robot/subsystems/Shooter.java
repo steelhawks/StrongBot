@@ -18,7 +18,7 @@ public class Shooter extends Subsystem {
     // here. Call these from Commands.
 	Constants constants = Constants.getInstance();
 	
-	HawkDoubleSolenoid shootForward = new HawkDoubleSolenoid(constants.shooterSolenoidOn, constants.shooterSolenoidOff, "shootingSolenoid");
+	//HawkDoubleSolenoid shootForward = new HawkDoubleSolenoid(constants.shooterSolenoidOn, constants.shooterSolenoidOff, "shootingSolenoid");
 	//DoubleSolenoid shootForward = new DoubleSolenoid(constants.shooterSolenoidOn, constants.shooterSolenoidOff);
 
 	//this is used for the logger
@@ -38,11 +38,11 @@ public class Shooter extends Subsystem {
     	//you can't set this as default
     }
     public void shootPiston(){
-    	shootForward.set(HawkDoubleSolenoid.Value.kForward);
+    //	shootForward.set(HawkDoubleSolenoid.Value.kForward);
     	//logger.log(constants.logging);
     }
     public void retractPiston(){
-    	shootForward.set(HawkDoubleSolenoid.Value.kReverse);
+    	//shootForward.set(HawkDoubleSolenoid.Value.kReverse);
     	//logger.log(constants.logging);
     }
 }

@@ -1,7 +1,9 @@
 package org.usfirst.frc.team2601.robot;
 
+import org.usfirst.frc.team2601.robot.Constants.Test_Mode;
 import org.usfirst.frc.team2601.robot.commands.ReadCorners;
 import org.usfirst.frc.team2601.robot.commands.SlowDrive;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.GyroReset;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.Shift;
 import org.usfirst.frc.team2601.robot.commands.scaler.ScaleBoolean;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousPiston;
@@ -36,8 +38,19 @@ public class OI {
 	    	Button slowDrivetrain = new JoystickButton(constants.stick, constants.slowDrivetrainButton);
 	    	slowDrivetrain.whileHeld(new SlowDrive());
 	    	
+	    	Button gyroReset = new JoystickButton(constants.stick, constants.gyroResetButton);
+	    	gyroReset.whenPressed(new GyroReset());
+	    	
 	    	Button vision = new JoystickButton(constants.stick, constants.vision);
 	    	vision.whenPressed(new ReadCorners());
+	    	
+	    	if(constants.test == constants.test.MarcusWeirdTest){
+	    		Button driverContinuousWheels = new JoystickButton(constants.stick, constants.driverContinouousWheelsButton);
+	    		driverContinuousWheels.whenPressed(new ContinuousShoot());
+	    		
+	    		Button driverPiston = new JoystickButton(constants.stick, constants.driverPistonButton);
+	    		driverPiston.whenPressed(new ContinuousPiston());	
+	    	}
 	    //}
 	    
 	    //Operator Controls

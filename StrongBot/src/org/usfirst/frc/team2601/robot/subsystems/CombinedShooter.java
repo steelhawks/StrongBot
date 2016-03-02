@@ -3,6 +3,7 @@ package org.usfirst.frc.team2601.robot.subsystems;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
+import org.usfirst.frc.team2601.robot.Constants.Claw_Type;
 import org.usfirst.frc.team2601.robot.Robot;
 import org.usfirst.frc.team2601.robot.commands.shooter.CombinedManualShooter;
 import org.usfirst.frc.team2601.robot.util.HawkCANTalon;
@@ -13,7 +14,6 @@ import org.usfirst.frc.team2601.robot.util.TalonEncoder;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -30,35 +30,37 @@ public class CombinedShooter extends Subsystem {
 	Constants constants = Constants.getInstance();
 	
 	//Solenoids
-	HawkDoubleSolenoid shootForward = new HawkDoubleSolenoid(constants.shooterSolenoidOn, constants.shooterSolenoidOff, "shootingSolenoid");
+	HawkDoubleSolenoid leftShootForward = new HawkDoubleSolenoid(constants.leftShooterSolenoidOn, constants.leftShooterSolenoidOff, "shootingSolenoid");
+	HawkDoubleSolenoid rightShootForward = new HawkDoubleSolenoid(constants.rightShooterSolenoidOn, constants.rightShooterSolenoidOff, "shootingSolenoid");
 
 	//CANTalons
-	HawkCANTalon topRollerMotor = new HawkCANTalon(constants.topRollerTalon, "topRollerMotor");
-	HawkCANTalon bottomRollerMotor = new HawkCANTalon(constants.bottomRollerTalon, "bottomRollerMotor");
+	HawkCANTalon leftRollerMotor = new HawkCANTalon(constants.leftRollerTalon, "leftRollerMotor");
+	HawkCANTalon rightRollerMotor = new HawkCANTalon(constants.rightRollerTalon, "rightRollerMotor");
 	HawkCANTalon shooterPivotMotor = new HawkCANTalon(constants.shooterPivotTalon, "shooterPivotMotor");
 	
-	TalonEncoder shooterPivotEncoder = new TalonEncoder(shooterPivotMotor);
+	TalonEncoder firstShooterEncoder = new TalonEncoder(leftRollerMotor); //left
+	TalonEncoder secondShooterEncoder = new TalonEncoder(rightRollerMotor); //right
 	
-	AnalogInput ai = new AnalogInput(constants.shooterPivotPotAnalogPin);
-	Potentiometer pot = new AnalogPotentiometer(ai,360,60);
-	double degrees = pot.get();
+	AnalogPotentiometer pot = new AnalogPotentiometer(constants.shooterPivotPotAnalogPin,360,60);
 	
-	public double shooterPivotEncPosition;
-	public double shooterPivotEncVelocity;
-	
+	public double firstShooterEncPosition;
+	public double firstShooterEncVelocity;
+	public double secondShooterEncPosition;
+	public double secondShooterEncVelocity;
+		
 	public boolean shoot;
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
 	public HawkLogger logger;
 	public CombinedShooter(){
 		//loggingList.add(shootForward);
-		loggingList.add(topRollerMotor);
-		loggingList.add(bottomRollerMotor);
+		loggingList.add(leftRollerMotor);
+		loggingList.add(rightRollerMotor);
 		loggingList.add(shooterPivotMotor);
-		loggingList.add(shootForward);
 		//ready logger
 		logger = new HawkLogger("combinedshooter", loggingList);
 		logger.setup();
+		
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -67,17 +69,24 @@ public class CombinedShooter extends Subsystem {
     }
     public void manualShootPiston(Joystick stick){
     	manualControlShooter(stick);
-    	shootForward.set(HawkDoubleSolenoid.Value.kForward);
+    	leftShootForward.set(HawkDoubleSolenoid.Value.kForward);
+    	if(constants.claw == Claw_Type.Circle){
+    		rightShootForward.set(HawkDoubleSolenoid.Value.kForward);
+    	}
     	//logger.log(constants.logging);
     }
     
     public void shootPiston(){
-    	shootForward.set(HawkDoubleSolenoid.Value.kForward);
-    	
+    	leftShootForward.set(HawkDoubleSolenoid.Value.kForward);
+    	if(constants.claw == Claw_Type.Circle){
+    		rightShootForward.set(HawkDoubleSolenoid.Value.kForward);
+    	}
     }
     public void retractPiston(){
-    	shootForward.set(HawkDoubleSolenoid.Value.kReverse);
-    	//logger.log(constants.logging);
+    	leftShootForward.set(HawkDoubleSolenoid.Value.kReverse);
+    	if(constants.claw == Claw_Type.Circle){
+    		rightShootForward.set(HawkDoubleSolenoid.Value.kReverse);
+    	}
     }
     public void continuousPiston(){
     	Robot.combinedshooter.spinRollers();
@@ -87,45 +96,50 @@ public class CombinedShooter extends Subsystem {
 		Robot.combinedshooter.retractPiston();
     }
     public void manualControlShooter(Joystick stick){
-    	double move = stick.getY();
-    	topRollerMotor.set(move*constants.topRollerMultiplier*constants.rollerSpeed);
-    	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.rollerSpeed);
-    	if(stick.getY()<0){
-    		topRollerMotor.set(move*constants.topRollerMultiplier*constants.intakeSpeed);
-        	bottomRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
+    	double move = stick.getTwist();
+    	leftRollerMotor.set(move*constants.topRollerMultiplier*constants.rollerSpeed);
+    	rightRollerMotor.set(move*constants.bottomRollerMultiplier*constants.rollerSpeed);
+    	if(stick.getTwist()<0){
+    		leftRollerMotor.set(move*constants.topRollerMultiplier*constants.intakeSpeed);
+        	rightRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
     	}
+    	//Talon Encoders
+    	firstShooterEncPosition = firstShooterEncoder.getPosition();
+    	firstShooterEncVelocity = firstShooterEncoder.getVelocity();
+    	
+    	secondShooterEncPosition = secondShooterEncoder.getPosition();
+    	secondShooterEncVelocity = secondShooterEncoder.getVelocity();
+    	
+    	SmartDashboard.putNumber("LeftShooterEncoderPosition",firstShooterEncPosition);
+    	SmartDashboard.putNumber("LeftShooterPivotEncoderVelocity",firstShooterEncVelocity);
+    	SmartDashboard.putNumber("RightShooterEncoderPosition",secondShooterEncPosition);
+    	SmartDashboard.putNumber("RightShooterPivotEncoderVelocity",secondShooterEncVelocity);
+    
     	//logger.log(constants.logging);
     }
     public void spinRollers(){
-   		topRollerMotor.set(constants.rollerSpeed*constants.topRollerMultiplier);
-   		bottomRollerMotor.set(constants.rollerSpeed*constants.bottomRollerMultiplier);
+   		leftRollerMotor.set(constants.rollerSpeed*constants.topRollerMultiplier);
+   		rightRollerMotor.set(constants.rollerSpeed*constants.bottomRollerMultiplier);
     	//logger.log(constants.logging);
     }
     public void stopRollers(){
-    	topRollerMotor.set(0);
-   		bottomRollerMotor.set(0);
+    	leftRollerMotor.set(0);
+   		rightRollerMotor.set(0);
     	//logger.log(constants.logging);
     }
     public void autonShootRollers(){
-    	topRollerMotor.set(constants.autonShootSpeed*constants.topRollerMultiplier);
-    	bottomRollerMotor.set(constants.autonShootSpeed*constants.bottomRollerMultiplier);
+    	leftRollerMotor.set(constants.autonShootSpeed*constants.topRollerMultiplier);
+    	rightRollerMotor.set(constants.autonShootSpeed*constants.bottomRollerMultiplier);
     }
     public void autonIntakeRollers(){
-    	topRollerMotor.set(constants.autonIntakeSpeed*constants.topRollerMultiplier);
-    	bottomRollerMotor.set(constants.autonIntakeSpeed*constants.bottomRollerMultiplier);
+    	leftRollerMotor.set(constants.autonIntakeSpeed*constants.topRollerMultiplier);
+    	rightRollerMotor.set(constants.autonIntakeSpeed*constants.bottomRollerMultiplier);
     }
     public void manualShooterPivot(Joystick stick){
-    	double move = stick.getX();
+    	double move = stick.getY();
     	shooterPivotMotor.set(move*constants.shooterPivotSpeed);
-    	//Talon Encoders
-    	shooterPivotEncPosition = shooterPivotEncoder.getPosition();
-    	shooterPivotEncVelocity = shooterPivotEncoder.getVelocity();
-    	
-    	SmartDashboard.putNumber("ShooterPivotEncoderPosition",shooterPivotEncPosition);
-    	SmartDashboard.putNumber("ShooterPivotEncoderVelocity",shooterPivotEncVelocity);
-    	
     	//Actuator Potentiometers
-    	SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", degrees);
+    	SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", pot.get());   
     }
     public void shooterPivotUp(){
     	shooterPivotMotor.set(constants.shooterPivotSpeed*constants.shooterPivotUpMultiplier); 

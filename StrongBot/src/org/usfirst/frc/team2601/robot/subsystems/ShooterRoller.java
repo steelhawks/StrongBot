@@ -17,8 +17,8 @@ public class ShooterRoller extends Subsystem {
     // here. Call these from Commands.
 	Constants constants = Constants.getInstance();
 	
-	HawkCANTalon topRollerMotor = new HawkCANTalon(constants.topRollerTalon, "topRollerMotor");
-	HawkCANTalon bottomRollerMotor = new HawkCANTalon(constants.bottomRollerTalon, "bottomRollerMotor");
+	HawkCANTalon topRollerMotor = new HawkCANTalon(constants.leftRollerTalon, "topRollerMotor");
+	HawkCANTalon bottomRollerMotor = new HawkCANTalon(constants.rightRollerTalon, "bottomRollerMotor");
 	
 	//this is used for the logger
 		private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();

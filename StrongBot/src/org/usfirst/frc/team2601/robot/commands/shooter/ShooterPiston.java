@@ -13,8 +13,8 @@ public class ShooterPiston extends Command {
 	
 	Constants constants = Constants.getInstance();
 
-	HawkCANTalon topRollerMotor = new HawkCANTalon(constants.topRollerTalon, "topRollerMotor");
-	HawkCANTalon bottomRollerMotor = new HawkCANTalon(constants.bottomRollerTalon, "bottomRollerMotor");
+	HawkCANTalon topRollerMotor = new HawkCANTalon(constants.leftRollerTalon, "topRollerMotor");
+	HawkCANTalon bottomRollerMotor = new HawkCANTalon(constants.rightRollerTalon, "bottomRollerMotor");
 	
     public ShooterPiston() {
         // Use requires() here to declare subsystem dependencies

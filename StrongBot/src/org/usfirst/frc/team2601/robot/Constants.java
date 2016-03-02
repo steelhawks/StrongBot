@@ -30,6 +30,12 @@ public class Constants {
 	public enum System_Mode {All, DriveOnly, ShootOnly};  // pfw - added to toggle between shooting & driving for testing
 	public System_Mode mode = System_Mode.ShootOnly;
 	
+	public enum Test_Mode {MarcusWeirdTest, Regular}; //MarcusWeirdTest puts shooting controls onto the driver stick
+	public Test_Mode test = Test_Mode.MarcusWeirdTest;
+	
+	public enum Claw_Type {Circle, Square};
+	public Claw_Type claw = Claw_Type.Circle;
+	
 	public final boolean PNEUMATICS_ON = true;
 		
 	//Talons
@@ -38,8 +44,8 @@ public class Constants {
     public int frontRightTalon;
     public int backRightTalon;
     
-    public int topRollerTalon;
-    public int bottomRollerTalon;    
+    public int leftRollerTalon;
+    public int rightRollerTalon;    
     public int shooterPivotTalon;
     
     public int armUpTalon;
@@ -59,19 +65,20 @@ public class Constants {
 	
 	//Gyros
 	public int gyroAnalogPin;
-	public double gyroAngle = 0.0;
-	public double gyroRate = 0.0;
 	
 	//Potentiometers
-	public int shooterPivotPotAnalogPin = 1; 
+	public int shooterPivotPotAnalogPin = 0; 
 	
-    //Solenoids
-    public int shooterSolenoidOn = 4;
-    public int shooterSolenoidOff = 5;
+    //Drivetrain Solenoids
     public int leftSolenoidOn = 0;
     public int leftSolenoidOff = 1;
     public int rightSolenoidOn = 2;
     public int rightSolenoidOff = 3;
+    //Shooter Solenoids
+    public int leftShooterSolenoidOn = 4;
+    public int leftShooterSolenoidOff = 5;
+    public int rightShooterSolenoidOn = 6;
+    public int rightShooterSolenoidOff = 7;
     
     //Rollers
     public int topRollerMultiplier = -1;
@@ -80,21 +87,20 @@ public class Constants {
     public int rollerSpeed = 1;
     public double intakeSpeed = 1;
     
-    
     public double scaleSpeed = 1.0;
     public double armUpSpeed = 0.5;
     //public static int scaleMultiplier = 1;
-    public int shooterPivotUpMultiplier = 1;
-    public int shooterPivotDownMultiplier = -1;
+    public int shooterPivotUpMultiplier = -1;
+    public int shooterPivotDownMultiplier = 1;
     public double shooterPivotSpeed = 1.0;
     public double slowDrivetrainSpeed = 0.5;
     
   //autonomous commands and multipliers
   	//drivetrain
-  	public double autonForward = 1.0;
-  	public double autonSlowForward = 0.5;
-  	public double autonBackward = -1.0;
-  	public double autonSlowBackward = -0.5;
+  	public double autonForward = -1.0;
+  	public double autonSlowForward = -0.5;
+  	public double autonBackward = 1.0;
+  	public double autonSlowBackward = 0.5;
   	public double autonTurnSpeed = 1.0;
   	public double autonSlowTurnSpeed = 0.5;
 
@@ -106,10 +112,9 @@ public class Constants {
   	public double autonIntakeSpeed = -0.5;
   		
   	//shooter pivot
-  	public double autonPivotSpeed = 1.0;
+  	public double autonPivotSpeed = 0.75;
   	public double autonSlowPivotSpeed = 0.5;
   	
- 
     //Joysticks
     public Joystick stick;
 	public Joystick shooter;
@@ -119,17 +124,17 @@ public class Constants {
     //Driver Buttons
     public int shiftButton = 1;
     public int slowDrivetrainButton = 2;
-    public int vision = 4;
+    public int vision = 11;
+    public int driverContinouousWheelsButton = 9;
+    public int driverPistonButton = 10;
+    public int gyroResetButton = 3;
     
 	//Operator Buttons
 	public int continuousWheelsButton = 2;
 	public int pistonButton = 3;
 	public int switchScaleMotorsButton = 4;
 	public int stopShootButton = 5;
-	public int triggerShooterButton = 1; 
-	/*public int pivotUpButton = 9;
-	public int pivotDownButton = 10;
-	public int pivotStop = 5;*/
+	public int triggerShooterButton = 1;
 	
 	//variables that shouldn't be in constants
 	//public boolean scale;//used to switch between the two motors
@@ -155,34 +160,34 @@ public class Constants {
 		    frontRightTalon = 3;
 		    backRightTalon = 4;
 		    
-		    topRollerTalon = 5;
-		    bottomRollerTalon = 6;
+		    leftRollerTalon = 5;//left
+		    rightRollerTalon = 6;//right
 		    shooterPivotTalon = 7;
 		    
-		    armUpTalon = 1;//8
-		    armExtendTalon = 0;
-		    armRetractTalon = 2;//12
+		 //   armUpTalon = 1;//8
+		 //   armExtendTalon = 0;
+		 //   armRetractTalon = 2;//12
 		    
 		    ultrasonicInput = 4;
 		    ultrasonicOutput = 5;
 		    
-		    gyroAnalogPin = 0;
+		    gyroAnalogPin = 1;
 		    
 	   }
 	   else if(system == System_Type.Alpha){
-		   frontLeftTalon = 10;
-		    backLeftTalon = 20;
+		   frontLeftTalon = 1;
+		    backLeftTalon = 2;
 		    
 		    frontRightTalon = 3;
 		    backRightTalon = 4;
 		    
-		    topRollerTalon = 5;
-		    bottomRollerTalon = 6;
+		    leftRollerTalon = 5;
+		    rightRollerTalon = 6;
 		    shooterPivotTalon = 7;
 		    
-		    armUpTalon = 1;//8
+		    armUpTalon = 8;//8
 		    armExtendTalon = 0;
-		    armRetractTalon = 2;//12
+		    armRetractTalon = 12;//12
 		    
 		    ultrasonicInput = 4;
 		    ultrasonicOutput = 5;
