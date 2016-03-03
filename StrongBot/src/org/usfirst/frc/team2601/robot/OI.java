@@ -5,6 +5,7 @@ import org.usfirst.frc.team2601.robot.commands.ReadCorners;
 import org.usfirst.frc.team2601.robot.commands.SlowDrive;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.GyroReset;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.Shift;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.StopMotors;
 import org.usfirst.frc.team2601.robot.commands.scaler.ScaleBoolean;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousShoot;
@@ -44,6 +45,9 @@ public class OI {
 	    	Button vision = new JoystickButton(constants.stick, constants.vision);
 	    	vision.whenPressed(new ReadCorners());
 	    	
+	    	Button stop = new JoystickButton(constants.stick, constants.stopMotors);
+	    	stop.whenPressed(new StopMotors());
+	    	
 	    	if(constants.test == constants.test.MarcusWeirdTest){
 	    		Button driverContinuousWheels = new JoystickButton(constants.stick, constants.driverContinouousWheelsButton);
 	    		driverContinuousWheels.whenPressed(new ContinuousShoot());
@@ -71,14 +75,5 @@ public class OI {
 	    	Button switchScaleMotors = new JoystickButton(constants.shooter, constants.switchScaleMotorsButton);
 	    	switchScaleMotors.whenPressed(new ScaleBoolean());
 	   // }
-	    
-	   /* Button shooterPivotUp = new JoystickButton(constants.shooter, constants.pivotUpButton);
-	    shooterPivotUp.whenPressed(new ShooterPivotUp());
-	    
-	    Button shooterPivotDown = new JoystickButton(constants.shooter, constants.pivotDownButton);
-	    shooterPivotDown.whenPressed(new ShooterPivotDown());
-	
-	    Button shooterPivotStop = new JoystickButton(constants.shooter, constants.pivotStop);
-	    shooterPivotStop.whenPressed(new ShooterPivotStop());*/
 	}
 }

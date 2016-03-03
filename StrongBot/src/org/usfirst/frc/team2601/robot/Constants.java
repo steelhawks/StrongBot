@@ -128,6 +128,7 @@ public class Constants {
     public int driverContinouousWheelsButton = 9;
     public int driverPistonButton = 10;
     public int gyroResetButton = 3;
+    public int stopMotors = 5;
     
 	//Operator Buttons
 	public int continuousWheelsButton = 2;

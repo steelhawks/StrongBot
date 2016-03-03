@@ -1,6 +1,5 @@
-package org.usfirst.frc.team2601.robot.commands.shooter;
+package org.usfirst.frc.team2601.robot.commands.drivetrain;
 
-import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,14 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Shoot extends Command {
+public class StopMotors extends Command {
 
-	Constants constants = Constants.getInstance();
-	
-    public Shoot() {
+    public StopMotors() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.roller);
+    	requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
@@ -24,7 +21,7 @@ public class Shoot extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.roller.manualControlShooter(constants.shooter);
+    	Robot.drivetrain.autonStopMotors();
     }
 
     // Make this return true when this Command no longer needs to run execute()
