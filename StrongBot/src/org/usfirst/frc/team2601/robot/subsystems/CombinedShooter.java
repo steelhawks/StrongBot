@@ -48,7 +48,12 @@ public class CombinedShooter extends Subsystem {
 	public double secondShooterEncPosition;
 	public double secondShooterEncVelocity;
 		
+	double degrees;
+	
 	public boolean shoot;
+	private boolean shot;
+	public boolean intake;
+	public boolean level;
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
 	public HawkLogger logger;
@@ -81,12 +86,16 @@ public class CombinedShooter extends Subsystem {
     	if(constants.claw == Claw_Type.Circle){
     		rightShootForward.set(HawkDoubleSolenoid.Value.kForward);
     	}
+    	shot = true;
+    	SmartDashboard.putBoolean("Piston shot", shot);
     }
     public void retractPiston(){
     	leftShootForward.set(HawkDoubleSolenoid.Value.kReverse);
     	if(constants.claw == Claw_Type.Circle){
     		rightShootForward.set(HawkDoubleSolenoid.Value.kReverse);
     	}
+    	shot = false;
+    	SmartDashboard.putBoolean("Piston shot", shot);
     }
     public void continuousPiston(){
     	Robot.combinedshooter.spinRollers();
@@ -111,9 +120,9 @@ public class CombinedShooter extends Subsystem {
     	secondShooterEncVelocity = secondShooterEncoder.getVelocity();
     	
     	SmartDashboard.putNumber("LeftShooterEncoderPosition",firstShooterEncPosition);
-    	SmartDashboard.putNumber("LeftShooterPivotEncoderVelocity",firstShooterEncVelocity);
+    	SmartDashboard.putNumber("LeftShooterEncoderVelocity",firstShooterEncVelocity);
     	SmartDashboard.putNumber("RightShooterEncoderPosition",secondShooterEncPosition);
-    	SmartDashboard.putNumber("RightShooterPivotEncoderVelocity",secondShooterEncVelocity);
+    	SmartDashboard.putNumber("RightShooterEncoderVelocity",secondShooterEncVelocity);
     
     	//logger.log(constants.logging);
     }
@@ -136,10 +145,76 @@ public class CombinedShooter extends Subsystem {
     	rightRollerMotor.set(constants.autonIntakeSpeed*constants.bottomRollerMultiplier);
     }
     public void manualShooterPivot(Joystick stick){
-    	double move = stick.getY();
-    	shooterPivotMotor.set(move*constants.shooterPivotSpeed);
     	//Actuator Potentiometers
-    	SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", pot.get());   
+    	SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", degrees);   
+	    double move = stick.getY();
+	    degrees = pot.get();
+	    /*if (move > 0){ //stickback
+	    	if(degrees>constants.minPot){
+	        	shooterPivotMotor.set(-move*constants.shooterPivotSpeed);
+	   		}
+	   		else{
+	   			shooterPivotMotor.set(0);
+	    	}
+	   	}
+	    if (move < 0){ //stickforward
+	   		if (degrees < constants.maxPot){
+	   			shooterPivotMotor.set(-move*constants.shooterPivotSpeed);
+		   	}
+	    	else{
+	    		shooterPivotMotor.set(0);
+	    	}
+	    } */
+			shooterPivotMotor.set(-move*constants.shooterPivotSpeed);
+
+    }
+    public void moveToFire(){
+    	degrees = pot.get();
+    	if(degrees >= constants.shootPot - constants.potTolerance && degrees <= constants.shootPot + constants.potTolerance){
+    		shooterPivotMotor.set(0); 
+    		shoot = true;
+    	}
+    	else if(degrees > constants.shootPot + constants.potTolerance){
+    		shooterPivotMotor.set(-constants.shooterPivotSpeed);
+    		shoot = false;
+    	}
+    	else if(degrees < constants.shootPot - constants.potTolerance){
+    		shooterPivotMotor.set(constants.shooterPivotSpeed);
+    		shoot = false;
+    	}
+		SmartDashboard.putBoolean("PivotShoot", shoot);
+    }
+    public void moveToIntake(){
+    	degrees = pot.get();
+    	if(degrees >= constants.intakePot - constants.potTolerance && degrees <= constants.intakePot + constants.potTolerance){
+    		shooterPivotMotor.set(0); 
+    		intake = true;
+    	}
+    	else if(degrees > constants.intakePot + constants.potTolerance){
+    		shooterPivotMotor.set(-constants.shooterPivotSpeed);
+    		intake = false;
+    	}
+    	else if(degrees < constants.intakePot - constants.potTolerance){
+    		shooterPivotMotor.set(constants.shooterPivotSpeed);
+    		intake = false;
+    	}
+		SmartDashboard.putBoolean("PivotIntake", intake);
+    }
+    public void moveToLowBar(){
+    	degrees = pot.get();
+    	if(degrees >= constants.lowBarPot - constants.potTolerance && degrees <= constants.lowBarPot + constants.potTolerance){
+    		shooterPivotMotor.set(0); 
+    		level = true;
+    	}
+    	else if(degrees > constants.lowBarPot + constants.potTolerance){
+    		shooterPivotMotor.set(-constants.shooterPivotSpeed);
+    		level = false;
+    	}
+    	else if(degrees < constants.lowBarPot - constants.potTolerance){
+    		shooterPivotMotor.set(constants.shooterPivotSpeed);
+    		level = false;
+    	}
+		SmartDashboard.putBoolean("PivotLowBar", level);
     }
     public void shooterPivotUp(){
     	shooterPivotMotor.set(constants.shooterPivotSpeed*constants.shooterPivotUpMultiplier); 

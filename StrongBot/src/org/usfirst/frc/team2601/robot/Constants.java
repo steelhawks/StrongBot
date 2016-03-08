@@ -31,7 +31,7 @@ public class Constants {
 	public System_Mode mode = System_Mode.ShootOnly;
 	
 	public enum Test_Mode {MarcusWeirdTest, Regular}; //MarcusWeirdTest puts shooting controls onto the driver stick
-	public Test_Mode test = Test_Mode.MarcusWeirdTest;
+	public Test_Mode test = Test_Mode.Regular;
 	
 	public enum Claw_Type {Circle, Square};
 	public Claw_Type claw = Claw_Type.Circle;
@@ -51,6 +51,8 @@ public class Constants {
     public int armUpTalon;
     public int armExtendTalon;
     public int armRetractTalon;
+    
+    public int winchTalon;
     
     //Encoders
     public int leftEncoderPortI = 0;
@@ -79,6 +81,9 @@ public class Constants {
     public int leftShooterSolenoidOff = 5;
     public int rightShooterSolenoidOn = 6;
     public int rightShooterSolenoidOff = 7;
+    //Scaler Solenoids
+    public int scalerSolenoidOn = 8;
+    public int scalerSolenoidOff = 9;
     
     //Rollers
     public int topRollerMultiplier = -1;
@@ -129,6 +134,7 @@ public class Constants {
     public int driverPistonButton = 10;
     public int gyroResetButton = 3;
     public int stopMotors = 5;
+    public int alignButton = 12;
     
 	//Operator Buttons
 	public int continuousWheelsButton = 2;
@@ -136,22 +142,36 @@ public class Constants {
 	public int switchScaleMotorsButton = 4;
 	public int stopShootButton = 5;
 	public int triggerShooterButton = 1;
+	public int moveToFireButton = 9;
+	public int lowBarButton = 7;
+	public int intakeButton = 10;
+	public int grapplingHook = 11;
 	
 	//variables that shouldn't be in constants
 	//public boolean scale;//used to switch between the two motors
-	public boolean roll = false;//used to see if the rollers are continuous or not
-	public boolean shot = false;//used to see if piston is extended or nah
+	public boolean roll = false;//rollers are continuous or not
+	public boolean shot = false;//piston is extended or not
+	public boolean grapple = false;//scaler shooter is shot or not
 	
 	public final boolean logging = false;
-	
+
 	//PID Values
 	public double kP = 0.0;
 	public double kI = 0.0;
 	public double kD = 0.0;
+	
 	public double kF = 0.0;
 	public double PIDtolerance = 20.0;
 	
 	public final double distancePerPulse = 0.5;
+	
+	//Potentiometer Shooter Pivot Values
+	public double maxPot = 369;
+	public double minPot = 285;
+	public double shootPot = 420;
+	public double lowBarPot = 420;
+	public double intakePot = 148;
+	public double potTolerance = 5;	
 	
     private Constants(){
 	   if(system == System_Type.Beta){
@@ -164,6 +184,8 @@ public class Constants {
 		    leftRollerTalon = 5;//left
 		    rightRollerTalon = 6;//right
 		    shooterPivotTalon = 7;
+		    
+		    winchTalon = 8;
 		    
 		 //   armUpTalon = 1;//8
 		 //   armExtendTalon = 0;

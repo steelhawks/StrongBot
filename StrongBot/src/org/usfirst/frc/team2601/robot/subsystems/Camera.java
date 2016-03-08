@@ -5,9 +5,6 @@ import java.util.List;
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.Robot;
 
-import java.io.Console;
-import java.lang.reflect.Array;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -35,8 +32,15 @@ public class Camera extends Subsystem {
 	int s;
 	public boolean aligned = false;
 
+
+	public ArrayList<Point> leftCoords = new ArrayList<Point>();
+	public ArrayList<Point> rightCoords = new ArrayList<Point>();	
+	public Point UL = new Point();
+	public Point LL = new Point();
+	public Point UR = new Point();
+	public Point LR = new Point();
 	
-    public void initDefaultCommand() {
+	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
@@ -49,12 +53,6 @@ public class Camera extends Subsystem {
     	ArrayList<Point> xyCoord = new ArrayList<Point>();	
     	ArrayList<Point> corners = new ArrayList<Point>();
     	
-    	ArrayList<Point> leftCoords = new ArrayList<Point>();
-    	ArrayList<Point> rightCoords = new ArrayList<Point>();	
-    	Point UL = new Point();
-    	Point LL = new Point();
-    	Point UR = new Point();
-    	Point LR = new Point();
     	Double[] smth = new Double[10];
 		smth[0] = 1.0;
 		Double[] values = new Double[20];		
@@ -161,91 +159,64 @@ public class Camera extends Subsystem {
 	   					System.out.println("UpperRight = " + UR.x + ", " + UR.y);
 	   				}
 	   			}
-	   			//slope values
-	   			double a = LR.y - LL.y;
-	   			double b = LR.x - LL.x;
-	   			double slope = a/b;
-	   			//distance and midpoint values
-	   			double a2 = (LR.x - LL.x)^2;
-	   			double a3 = (LR.y - LL.y)^2;
-	   			double distanceLLtoLR = Math.sqrt(a2 + a3);
-	   			double midpointLLtoLR = distanceLLtoLR/2;
-	   			double GoalCenterX = 160;
-	   			double GoalCenterXTolerance = 15;
-	   			boolean moveLeftMid = false;
-	   			boolean moveRightMid = false;
-	   			
-	   			System.out.println(slope);
-	   			if(-1 > slope && midpointLLtoLR > GoalCenterX + GoalCenterXTolerance){
-	   				System.out.println("Turn Left");
-	   				
-	   				moveLeftMid = true;
-	   				moveRightMid = false;
-	   				aligned = false;
-	   				SmartDashboard.putBoolean("Move Left", moveLeftMid);
-	   				SmartDashboard.putBoolean("Move Right", moveRightMid);
-	   				SmartDashboard.putBoolean("Aligned", aligned);
-	   				
-	   				Robot.drivetrain.frontLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
-	   				Robot.drivetrain.backLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
-	   				Robot.drivetrain.frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
-	   				Robot.drivetrain.backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
-	   			}
-	   			if(slope > 0 && midpointLLtoLR < GoalCenterX - GoalCenterXTolerance){
-	   				System.out.println("Turn Right");
-	   				
-	   				moveLeftMid = false;
-	   				moveRightMid = true;
-	   				aligned = false;
-	   				SmartDashboard.putBoolean("Move Left", moveLeftMid);	
-	   				SmartDashboard.putBoolean("Move Right", moveRightMid);
-	   				SmartDashboard.putBoolean("Aligned", aligned);
-	   				
-	   				Robot.drivetrain.frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
-	   				Robot.drivetrain.backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
-	   				Robot.drivetrain.frontRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
-	   				Robot.drivetrain.backRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
-	   			}
-	   			if(slope < 0 && slope > -1 && midpointLLtoLR <= GoalCenterX + GoalCenterXTolerance && midpointLLtoLR >= GoalCenterX - GoalCenterXTolerance){
-	   				System.out.println("FIRE");
-	   				aligned = true;
-	   				moveLeftMid = false;
-	   				moveRightMid = false;
-	   				SmartDashboard.putBoolean("Move Left", moveLeftMid);
-	   				SmartDashboard.putBoolean("Move Right", moveRightMid);
-	   				SmartDashboard.putBoolean("Aligned", aligned);
-	   			
-	   				Robot.drivetrain.frontLeftMotor.set(0);
-	   				Robot.drivetrain.backLeftMotor.set(0);
-	   				Robot.drivetrain.frontRightMotor.set(0);
-	   				Robot.drivetrain.backRightMotor.set(0);
-	   			}
-	   			/*
-	   			if(midpointLLtoLR <= GoalCenterX + GoalCenterXTolerance && midpointLLtoLR >= GoalCenterX - GoalCenterXTolerance){
-	   				aligned = true;
-	   				moveLeftMid = false;
-	   				moveRightMid = false;
-	   				SmartDashboard.putBoolean("Move Left", moveLeftMid);
-	   				SmartDashboard.putBoolean("Move Right", moveRightMid);
-	   				SmartDashboard.putBoolean("Aligned", aligned);
-	   			}
-	   			else if(midpointLLtoLR > GoalCenterX + GoalCenterXTolerance){
-	   				moveLeftMid = true;
-	   				moveRightMid = false;
-	   				aligned = false;
-	   				SmartDashboard.putBoolean("Move Left", moveLeftMid);
-	   				SmartDashboard.putBoolean("Move Right", moveRightMid);
-	   				SmartDashboard.putBoolean("Aligned", aligned);
-	   			}
-	   			else if(midpointLLtoLR < GoalCenterX - GoalCenterXTolerance){
-	   				moveLeftMid = false;
-	   				moveRightMid = true;
-	   				aligned = false;
-	   				SmartDashboard.putBoolean("Move Left", moveLeftMid);	
-	   				SmartDashboard.putBoolean("Move Right", moveRightMid);
-	   				SmartDashboard.putBoolean("Aligned", aligned);
-	   			}*/
    			}
-   		}
+		}
     }
-}
+    public void align(){
+		//slope values
+			double a = LR.y - LL.y;
+			double b = LR.x - LL.x;
+			double slope = a/b;
+			//distance and midpoint values
+			int lowerX = (LL.x + LR.x)/2;
+			double GoalCenterX = 160;
+			double GoalCenterXTolerance = 15;
+			boolean moveLeftMid = false;
+			boolean moveRightMid = false;
+			
+			System.out.println(slope);
+			if(-1 > slope && lowerX > GoalCenterX + GoalCenterXTolerance){
+				System.out.println("Turn Left");
+				
+				moveLeftMid = true;
+				moveRightMid = false;
+				aligned = false;
+				SmartDashboard.putBoolean("Turn Left", moveLeftMid);
+				SmartDashboard.putBoolean("Turn Right", moveRightMid);
+				SmartDashboard.putBoolean("Aligned", aligned);
+				
+				Robot.drivetrain.frontLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+				Robot.drivetrain.backLeftMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+				Robot.drivetrain.frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+				Robot.drivetrain.backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+			}
+			if(slope > 0 && lowerX < GoalCenterX - GoalCenterXTolerance){
+				System.out.println("Turn Right");
+				moveLeftMid = false;
+				moveRightMid = true;
+				aligned = false;
+				SmartDashboard.putBoolean("Turn Left", moveLeftMid);	
+				SmartDashboard.putBoolean("Turn Right", moveRightMid);
+				SmartDashboard.putBoolean("Aligned", aligned);
+				
+				Robot.drivetrain.frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+				Robot.drivetrain.backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+				Robot.drivetrain.frontRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+				Robot.drivetrain.backRightMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+			}
+			if(slope < 0 && slope > -1 && lowerX <= GoalCenterX + GoalCenterXTolerance && lowerX >= GoalCenterX - GoalCenterXTolerance){
+				System.out.println("FIRE");
+				aligned = true;
+				moveLeftMid = false;
+				moveRightMid = false;
+				SmartDashboard.putBoolean("Turn Left", moveLeftMid);
+				SmartDashboard.putBoolean("Turn Right", moveRightMid);
+				SmartDashboard.putBoolean("Aligned", aligned);
+			
+				Robot.drivetrain.frontLeftMotor.set(0);
+				Robot.drivetrain.backLeftMotor.set(0);
+				Robot.drivetrain.frontRightMotor.set(0);
+				Robot.drivetrain.backRightMotor.set(0);
+			}
+    	}
+	}

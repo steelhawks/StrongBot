@@ -23,7 +23,30 @@ import org.usfirst.frc.team2601.robot.commands.Drive;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.AutonTest;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBar;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootHighGoal;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootTwoHighGoals;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.DoNothing;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.GyroForward;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.VisionAutonTest;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossChevalDeFriseShootHighGoalFive;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossMoatShootHighGoalFive;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossRampartsShootHighGoalFive;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossRockWallShootHighGoalFive;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossRoughTerrainShootHighGoalFive;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.four.CrossChevalDeFriseShootHighGoalFour;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.four.CrossMoatShootHighGoalFour;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.four.CrossRampartsShootHighGoalFour;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.four.CrossRockWallShootHighGoalFour;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.four.CrossRoughTerrainShootHighGoalFour;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.three.CrossChevalDeFriseShootHighGoalThree;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.three.CrossMoatShootHighGoalThree;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.three.CrossRampartsShootHighGoalThree;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.three.CrossRockWallShootHighGoalThree;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.three.CrossRoughTerrainShootHighGoalThree;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.two.CrossChevalDeFriseShootHighGoalTwo;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.two.CrossMoatShootHighGoalTwo;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.two.CrossRampartsShootHighGoalTwo;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.two.CrossRockWallShootHighGoalTwo;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.two.CrossRoughTerrainShootHighGoalTwo;
 import org.usfirst.frc.team2601.robot.subsystems.Camera;
 import org.usfirst.frc.team2601.robot.subsystems.CombinedShooter;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
@@ -48,7 +71,7 @@ public class Robot extends IterativeRobot {
 	//public static Shooter shooter = new Shooter();
 	//public static ShooterRoller roller = new ShooterRoller();
 	//public static ShooterPivot shooterPivot = new ShooterPivot();
-	public static Scaler scaler = new Scaler();
+	//public static Scaler scaler = new Scaler();
     public static Camera camera = new Camera();
 	public static OI oi;
 	public static CombinedShooter combinedshooter  = new CombinedShooter();
@@ -87,11 +110,39 @@ public class Robot extends IterativeRobot {
 	        accel = new BuiltInAccelerometer();
 
 	        chooser = new SendableChooser();
-	        chooser.addDefault("AutonTest", new AutonTest());
+	        
+	        chooser.addDefault("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
+	        chooser.addObject("AutonTest", new AutonTest());
 	        chooser.addObject("Gyro Forward", new GyroForward());
 	        chooser.addObject("LowBarCross", new CrossLowBar());
 	        chooser.addObject("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
+	        chooser.addObject("AutonVision", new VisionAutonTest());
+	        chooser.addObject("NULL", new DoNothing());
+	        chooser.addObject("CrossChevalDeFriseShootHighGoal5", new CrossChevalDeFriseShootHighGoalFive());
+	        chooser.addObject("CrossMoatShootHighGoal5", new CrossMoatShootHighGoalFive());
+	        chooser.addObject("CrossRampartsShootHighGoal5", new CrossRampartsShootHighGoalFive());
+	        chooser.addObject("CrossRockWallShootHighGoal5", new CrossRockWallShootHighGoalFive());
+	        chooser.addObject("CrossRoughTerrainShootHighGoal5", new CrossRoughTerrainShootHighGoalFive());
+	        chooser.addObject("NULL", new DoNothing());
+	        chooser.addObject("CrossChevalDeFriseShootHighGoal4", new CrossChevalDeFriseShootHighGoalFour());
+	        chooser.addObject("CrossMoatShootHighGoal4", new CrossMoatShootHighGoalFour());
+	        chooser.addObject("CrossRampartsShootHighGoal4", new CrossRampartsShootHighGoalFour());
+	        chooser.addObject("CrossRockWallShootHighGoal4", new CrossRockWallShootHighGoalFour());
+	        chooser.addObject("CrossRoughTerrainShootHighGoal4", new CrossRoughTerrainShootHighGoalFour());
+	        chooser.addObject("NULL", new DoNothing());
+	        chooser.addObject("CrossChevalDeFriseShootHighGoal3", new CrossChevalDeFriseShootHighGoalThree());
+	        chooser.addObject("CrossMoatShootHighGoal3", new CrossMoatShootHighGoalThree());
+	        chooser.addObject("CrossRampartsShootHighGoal3", new CrossRampartsShootHighGoalThree());
+	        chooser.addObject("CrossRockWallShootHighGoal3", new CrossRockWallShootHighGoalThree());
+	        chooser.addObject("CrossRoughTerrainShootHighGoal3", new CrossRoughTerrainShootHighGoalThree());
+	        chooser.addObject("NULL", new DoNothing());
+	        chooser.addObject("CrossChevalDeFriseShootHighGoal2", new CrossChevalDeFriseShootHighGoalTwo());
+	        chooser.addObject("CrossMoatShootHighGoal2", new CrossMoatShootHighGoalTwo());
+	        chooser.addObject("CrossRampartsShootHighGoal2", new CrossRampartsShootHighGoalTwo());
+	        chooser.addObject("CrossRockWallShootHighGoal2", new CrossRockWallShootHighGoalTwo());
+	        chooser.addObject("CrossRoughTerrainShootHighGoal2", new CrossRoughTerrainShootHighGoalTwo());
 	        SmartDashboard.putData("Auto mode", chooser);
+	   
     }
 	
 	/**
@@ -117,17 +168,16 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
-    	Robot.drivetrain.gyro.reset();
+    	Robot.drivetrain.gyro.reset();		
     	
-    	autonomousCommand = new CrossLowBarShootHighGoal();
-           
-    	//autonomousCommand = (Command) chooser.getSelected();
+    	autonomousCommand = (Command) chooser.getSelected();
+    	autonomousCommand.start();
 		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
 		switch(autoSelected) {
 		case "My Auto":
 			autonomousCommand = new MyAutoCommand();
 			break;
-		case "Default Auto":
+		case ";' Auto":
 		default:
 			autonomousCommand = new ExampleCommand();
 			break;
@@ -151,7 +201,9 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
     	if (autonomousCommand != null) autonomousCommand.cancel();
-    }
+    	Robot.drivetrain.gyro.reset();		
+
+	}
 
     /**
      * This function is called periodically during operator control
@@ -161,9 +213,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("RoboRioAccelx", accel.getX());
         SmartDashboard.putNumber("RoboRioAccely", accel.getY());
         SmartDashboard.putNumber("RoboRioAccelz", accel.getZ());       
-        
-      //  SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", pot.get());
-        //SmartDashboard.putNumber("PotentiometerPidInppt", pot.pidGet());
+                                                                               
     }
     
     /**

@@ -15,7 +15,7 @@ public class Scale extends Command {
     public Scale() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.scaler);
+    	//requires(Robot.scaler);
     }
 
     // Called just before this Command runs the first time
@@ -24,8 +24,9 @@ public class Scale extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.scaler.manualArmUp(constants.shooter);
-    	Robot.scaler.manualScale(constants.shooter);
+    	//Robot.scaler.manualArmUp(constants.shooter);
+    	//Robot.scaler.manualScale(constants.shooter);
+    	//Robot.scaler.winchUp(constants.shooter);
     }
 
     // Make this return true when this Command no longer needs to run execute()

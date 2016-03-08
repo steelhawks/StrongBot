@@ -6,10 +6,12 @@ import org.usfirst.frc.team2601.robot.commands.SlowDrive;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.GyroReset;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.Shift;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.StopMotors;
-import org.usfirst.frc.team2601.robot.commands.scaler.ScaleBoolean;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutoAlign;
+import org.usfirst.frc.team2601.robot.commands.scaler.GrapplingHookPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.EStopShoot;
+import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
 import org.usfirst.frc.team2601.robot.commands.shooter.ShooterPiston;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
 
@@ -48,6 +50,9 @@ public class OI {
 	    	Button stop = new JoystickButton(constants.stick, constants.stopMotors);
 	    	stop.whenPressed(new StopMotors());
 	    	
+	    	Button align = new JoystickButton(constants.stick, constants.alignButton);
+	    	align.whenPressed(new AutoAlign());
+	    	
 	    	if(constants.test == constants.test.MarcusWeirdTest){
 	    		Button driverContinuousWheels = new JoystickButton(constants.stick, constants.driverContinouousWheelsButton);
 	    		driverContinuousWheels.whenPressed(new ContinuousShoot());
@@ -71,9 +76,12 @@ public class OI {
 	    	
 	    	Button stopShoot= new JoystickButton(constants.shooter, constants.stopShootButton);
 	    	stopShoot.whenPressed(new EStopShoot());
-	    
-	    	Button switchScaleMotors = new JoystickButton(constants.shooter, constants.switchScaleMotorsButton);
-	    	switchScaleMotors.whenPressed(new ScaleBoolean());
+	    	
+	    	Button moveToFire = new JoystickButton(constants.shooter, constants.moveToFireButton);
+	    	moveToFire.whenPressed(new MovePivotToFire());
+	    	
+	    	Button grapplingHook = new JoystickButton(constants.shooter, constants.grapplingHook);
+	    	grapplingHook.whenPressed(new GrapplingHookPiston());
 	   // }
 	}
 }

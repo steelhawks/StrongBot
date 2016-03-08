@@ -9,7 +9,9 @@ import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerIntake;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
+import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotDown;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
+import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -25,11 +27,15 @@ public class CrossLowBarShootHighGoal extends CommandGroup {
     	addSequential(new AutonRollerIntake(0.1));
     	Timer.delay(0.1);*/
     	//addSequential(new AutonShooterPivotUp(0.2));
-    	addSequential(new DriveFastForward(2.5));
-    	addSequential(new AutonFastTurnRight(0.9));
-    	addSequential(new AutonShooterPivotUp(0.85));
-    	addParallel(new AutonRollerShoot(2.0));
-    	addSequential(new AutonPistonShoot(2.0));
+    	addSequential(new AutonShooterPivotDown(1.07));
+    	addSequential(new DriveFastForward(1.25));
+    	addSequential(new AutonFastTurnRight(0.45));
+    	//addSequential(new MovePivotToFire());
+    	addSequential(new AutonShooterPivotUp(1.0));
+    	Timer.delay(0.1);
+    	addSequential(new AutonRollerShoot(1.5));
+    	addParallel(new AutonRollerShoot(1.5));
+    	addSequential(new AutonPistonShoot(1.5));
     	addSequential(new AutonPistonRetract(0.2));
     	
     	

@@ -39,14 +39,14 @@ public class AutonTest extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new DriveFastForward(0.5));
+    	/*addSequential(new DriveFastForward(0.5));
     	addSequential(new DriveSlowForward(0.5));
     	addSequential(new DriveFastBackward(0.5));
     	addSequential(new DriveSlowBackward(0.5));
     	addSequential(new AutonFastTurnLeft(0.5));
     	addSequential(new AutonSlowTurnLeft(0.5));
     	addSequential(new AutonFastTurnRight(0.5));
-    	addSequential(new AutonSlowTurnRight(0.5));
+    	addSequential(new AutonSlowTurnRight(0.5));*/
     	addSequential(new AutonRollerShoot(1.0));
     	addSequential(new AutonRollerIntake(1.0));
     	addSequential(new AutonShooterPivotUp(0.5));

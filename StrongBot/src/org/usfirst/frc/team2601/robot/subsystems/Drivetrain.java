@@ -84,8 +84,8 @@ public class Drivetrain extends Subsystem {
 		//loggingList.add(rightEncoder);
 
 		//ready logger
-		logger = new HawkLogger("drivetrain", loggingList);
-		logger.setup();
+		//logger = new HawkLogger("drivetrain", loggingList);
+		//logger.setup();
 
 		//ready shifting gearboxes
 		rightShift.set(HawkDoubleSolenoid.Value.kForward);
