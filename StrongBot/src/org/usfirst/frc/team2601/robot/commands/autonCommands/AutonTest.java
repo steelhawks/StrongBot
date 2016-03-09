@@ -12,9 +12,12 @@ import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerIntake;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
+import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShooterWait;
+import org.usfirst.frc.team2601.robot.commands.shooter.AutonShootBoolean;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotDown;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -47,11 +50,18 @@ public class AutonTest extends CommandGroup {
     	addSequential(new AutonSlowTurnLeft(0.5));
     	addSequential(new AutonFastTurnRight(0.5));
     	addSequential(new AutonSlowTurnRight(0.5));*/
-    	addSequential(new AutonRollerShoot(1.0));
+    	/*addSequential(new AutonRollerShoot(1.0));
     	addSequential(new AutonRollerIntake(1.0));
     	addSequential(new AutonShooterPivotUp(0.5));
     	addSequential(new AutonShooterPivotDown(0.5));
     	addSequential(new AutonPistonShoot(0.1));
-    	addSequential(new AutonPistonRetract(0.1));
+    	addSequential(new AutonPistonRetract(0.1));*/
+    	addSequential(new AutonRollerShoot(0.25));
+    	//addParallel(new AutonRollerShoot(5.0));
+    	addParallel(new AutonRollerShooterWait());
+    	Timer.delay(1.0);
+    	addSequential(new AutonPistonShoot(2.0));
+    	addParallel(new AutonShootBoolean());
+    	addSequential(new AutonPistonRetract(1.0));
     }
 }

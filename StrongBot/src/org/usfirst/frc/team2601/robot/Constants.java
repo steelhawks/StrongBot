@@ -36,6 +36,9 @@ public class Constants {
 	public enum Claw_Type {Circle, Square};
 	public Claw_Type claw = Claw_Type.Circle;
 	
+	public enum Shoot_Auton {Yes, No};
+	public Shoot_Auton shootOrNot = Shoot_Auton.No;
+	
 	public final boolean PNEUMATICS_ON = true;
 		
 	//Talons
@@ -94,7 +97,7 @@ public class Constants {
     
     public double scaleSpeed = 1.0;
     public double armUpSpeed = 0.5;
-    //public static int scaleMultiplier = 1;
+    //public int scaleMultiplier = 1;
     public int shooterPivotUpMultiplier = -1;
     public int shooterPivotDownMultiplier = 1;
     public double shooterPivotSpeed = 1.0;

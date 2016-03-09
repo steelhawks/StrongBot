@@ -52,8 +52,11 @@ public class CombinedShooter extends Subsystem {
 	
 	public boolean shoot;
 	private boolean shot;
+	public boolean autonShot;
+	public boolean autonShotSecond;
 	public boolean intake;
-	public boolean level;
+	public boolean lowBar;
+	public boolean autonStart = false;
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
 	public HawkLogger logger;
@@ -87,6 +90,10 @@ public class CombinedShooter extends Subsystem {
     		rightShootForward.set(HawkDoubleSolenoid.Value.kForward);
     	}
     	shot = true;
+    	autonShot = true;
+    	if(autonStart == true){
+    		autonShotSecond = false;
+    	}
     	SmartDashboard.putBoolean("Piston shot", shot);
     }
     public void retractPiston(){
@@ -95,7 +102,14 @@ public class CombinedShooter extends Subsystem {
     		rightShootForward.set(HawkDoubleSolenoid.Value.kReverse);
     	}
     	shot = false;
+    	autonShot = false;
+    	if(autonStart == true){
+    		autonShotSecond = true;
+    	}
     	SmartDashboard.putBoolean("Piston shot", shot);
+    }
+    public void autonBoolean(){
+    	autonStart = !autonStart;
     }
     public void continuousPiston(){
     	Robot.combinedshooter.spinRollers();
@@ -204,17 +218,17 @@ public class CombinedShooter extends Subsystem {
     	degrees = pot.get();
     	if(degrees >= constants.lowBarPot - constants.potTolerance && degrees <= constants.lowBarPot + constants.potTolerance){
     		shooterPivotMotor.set(0); 
-    		level = true;
+    		lowBar = true;
     	}
     	else if(degrees > constants.lowBarPot + constants.potTolerance){
     		shooterPivotMotor.set(-constants.shooterPivotSpeed);
-    		level = false;
+    		lowBar = false;
     	}
     	else if(degrees < constants.lowBarPot - constants.potTolerance){
     		shooterPivotMotor.set(constants.shooterPivotSpeed);
-    		level = false;
+    		lowBar = false;
     	}
-		SmartDashboard.putBoolean("PivotLowBar", level);
+		SmartDashboard.putBoolean("PivotLowBar", lowBar);
     }
     public void shooterPivotUp(){
     	shooterPivotMotor.set(constants.shooterPivotSpeed*constants.shooterPivotUpMultiplier); 

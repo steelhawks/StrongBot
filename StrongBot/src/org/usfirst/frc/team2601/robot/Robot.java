@@ -111,36 +111,36 @@ public class Robot extends IterativeRobot {
 
 	        chooser = new SendableChooser();
 	        
-	        chooser.addDefault("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
-	        chooser.addObject("AutonTest", new AutonTest());
-	        chooser.addObject("Gyro Forward", new GyroForward());
-	        chooser.addObject("LowBarCross", new CrossLowBar());
-	        chooser.addObject("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
-	        chooser.addObject("AutonVision", new VisionAutonTest());
+	        //chooser.addDefault("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
+	        //chooser.addObject("AutonTest", new AutonTest());
+	        //chooser.addObject("Gyro Forward", new GyroForward());
+	        //chooser.addObject("LowBarCross", new CrossLowBar());
+	        chooser.addDefault("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
+	        //chooser.addObject("AutonVision", new VisionAutonTest());
 	        chooser.addObject("NULL", new DoNothing());
-	        chooser.addObject("CrossChevalDeFriseShootHighGoal5", new CrossChevalDeFriseShootHighGoalFive());
+	        //chooser.addObject("CrossChevalDeFriseShootHighGoal5", new CrossChevalDeFriseShootHighGoalFive());
 	        chooser.addObject("CrossMoatShootHighGoal5", new CrossMoatShootHighGoalFive());
 	        chooser.addObject("CrossRampartsShootHighGoal5", new CrossRampartsShootHighGoalFive());
 	        chooser.addObject("CrossRockWallShootHighGoal5", new CrossRockWallShootHighGoalFive());
 	        chooser.addObject("CrossRoughTerrainShootHighGoal5", new CrossRoughTerrainShootHighGoalFive());
 	        chooser.addObject("NULL", new DoNothing());
-	        chooser.addObject("CrossChevalDeFriseShootHighGoal4", new CrossChevalDeFriseShootHighGoalFour());
-	        chooser.addObject("CrossMoatShootHighGoal4", new CrossMoatShootHighGoalFour());
-	        chooser.addObject("CrossRampartsShootHighGoal4", new CrossRampartsShootHighGoalFour());
-	        chooser.addObject("CrossRockWallShootHighGoal4", new CrossRockWallShootHighGoalFour());
-	        chooser.addObject("CrossRoughTerrainShootHighGoal4", new CrossRoughTerrainShootHighGoalFour());
+	        //chooser.addObject("CrossChevalDeFriseShootHighGoal4", new CrossChevalDeFriseShootHighGoalFour());
+	        //chooser.addObject("CrossMoatShootHighGoal4", new CrossMoatShootHighGoalFour());
+	        //chooser.addObject("CrossRampartsShootHighGoal4", new CrossRampartsShootHighGoalFour());
+	        //chooser.addObject("CrossRockWallShootHighGoal4", new CrossRockWallShootHighGoalFour());
+	        //chooser.addObject("CrossRoughTerrainShootHighGoal4", new CrossRoughTerrainShootHighGoalFour());
 	        chooser.addObject("NULL", new DoNothing());
-	        chooser.addObject("CrossChevalDeFriseShootHighGoal3", new CrossChevalDeFriseShootHighGoalThree());
-	        chooser.addObject("CrossMoatShootHighGoal3", new CrossMoatShootHighGoalThree());
-	        chooser.addObject("CrossRampartsShootHighGoal3", new CrossRampartsShootHighGoalThree());
-	        chooser.addObject("CrossRockWallShootHighGoal3", new CrossRockWallShootHighGoalThree());
-	        chooser.addObject("CrossRoughTerrainShootHighGoal3", new CrossRoughTerrainShootHighGoalThree());
+	        //chooser.addObject("CrossChevalDeFriseShootHighGoal3", new CrossChevalDeFriseShootHighGoalThree());
+	        //chooser.addObject("CrossMoatShootHighGoal3", new CrossMoatShootHighGoalThree());
+	        //chooser.addObject("CrossRampartsShootHighGoal3", new CrossRampartsShootHighGoalThree());
+	        //chooser.addObject("CrossRockWallShootHighGoal3", new CrossRockWallShootHighGoalThree());
+	        //chooser.addObject("CrossRoughTerrainShootHighGoal3", new CrossRoughTerrainShootHighGoalThree());
 	        chooser.addObject("NULL", new DoNothing());
-	        chooser.addObject("CrossChevalDeFriseShootHighGoal2", new CrossChevalDeFriseShootHighGoalTwo());
-	        chooser.addObject("CrossMoatShootHighGoal2", new CrossMoatShootHighGoalTwo());
-	        chooser.addObject("CrossRampartsShootHighGoal2", new CrossRampartsShootHighGoalTwo());
-	        chooser.addObject("CrossRockWallShootHighGoal2", new CrossRockWallShootHighGoalTwo());
-	        chooser.addObject("CrossRoughTerrainShootHighGoal2", new CrossRoughTerrainShootHighGoalTwo());
+	        //chooser.addObject("CrossChevalDeFriseShootHighGoal2", new CrossChevalDeFriseShootHighGoalTwo());
+	        //chooser.addObject("CrossMoatShootHighGoal2", new CrossMoatShootHighGoalTwo());
+	        //chooser.addObject("CrossRampartsShootHighGoal2", new CrossRampartsShootHighGoalTwo());
+	        //chooser.addObject("CrossRockWallShootHighGoal2", new CrossRockWallShootHighGoalTwo());
+	        //chooser.addObject("CrossRoughTerrainShootHighGoal2", new CrossRoughTerrainShootHighGoalTwo());
 	        SmartDashboard.putData("Auto mode", chooser);
 	   
     }

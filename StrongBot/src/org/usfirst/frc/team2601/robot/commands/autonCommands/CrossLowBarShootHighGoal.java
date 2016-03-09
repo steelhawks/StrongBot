@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2601.robot.commands.autonCommands;
 
+import org.usfirst.frc.team2601.robot.Constants;
+import org.usfirst.frc.team2601.robot.Constants.Shoot_Auton;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnRight;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastBackward;
@@ -21,6 +23,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class CrossLowBarShootHighGoal extends CommandGroup {
     
+	Constants constants = Constants.getInstance();
+	
     public  CrossLowBarShootHighGoal() {
     	
     	/*addParallel(new DriveSlowForward(1.0));
@@ -33,11 +37,12 @@ public class CrossLowBarShootHighGoal extends CommandGroup {
     	//addSequential(new MovePivotToFire());
     	addSequential(new AutonShooterPivotUp(1.0));
     	Timer.delay(0.1);
-    	addSequential(new AutonRollerShoot(1.5));
-    	addParallel(new AutonRollerShoot(1.5));
-    	addSequential(new AutonPistonShoot(1.5));
-    	addSequential(new AutonPistonRetract(0.2));
-    	
+    	if(constants.shootOrNot == Shoot_Auton.Yes){
+    		addSequential(new AutonRollerShoot(1.5));
+    		addParallel(new AutonRollerShoot(1.5));
+    		addSequential(new AutonPistonShoot(1.5));
+    		addSequential(new AutonPistonRetract(0.2));
+    	}
     	
     	// Add Commands here:
         // e.g. addSequential(new Command1());
