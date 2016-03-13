@@ -38,8 +38,8 @@ public class CombinedShooter extends Subsystem {
 	HawkCANTalon rightRollerMotor = new HawkCANTalon(constants.rightRollerTalon, "rightRollerMotor");
 	HawkCANTalon shooterPivotMotor = new HawkCANTalon(constants.shooterPivotTalon, "shooterPivotMotor");
 	
-	TalonEncoder firstShooterEncoder = new TalonEncoder(leftRollerMotor); //left
-	TalonEncoder secondShooterEncoder = new TalonEncoder(rightRollerMotor); //right
+	//TalonEncoder firstShooterEncoder = new TalonEncoder(leftRollerMotor); //left
+	//TalonEncoder secondShooterEncoder = new TalonEncoder(rightRollerMotor); //right
 	
 	AnalogPotentiometer pot = new AnalogPotentiometer(constants.shooterPivotPotAnalogPin,360,60);
 	
@@ -50,6 +50,7 @@ public class CombinedShooter extends Subsystem {
 		
 	double degrees;
 	
+	public boolean start;
 	public boolean shoot;
 	private boolean shot;
 	public boolean autonShot;
@@ -127,16 +128,16 @@ public class CombinedShooter extends Subsystem {
         	rightRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
     	}
     	//Talon Encoders
-    	firstShooterEncPosition = firstShooterEncoder.getPosition();
-    	firstShooterEncVelocity = firstShooterEncoder.getVelocity();
+    	//firstShooterEncPosition = firstShooterEncoder.getPosition();
+    	//firstShooterEncVelocity = firstShooterEncoder.getVelocity();
     	
-    	secondShooterEncPosition = secondShooterEncoder.getPosition();
-    	secondShooterEncVelocity = secondShooterEncoder.getVelocity();
+    	//secondShooterEncPosition = secondShooterEncoder.getPosition();
+    	//secondShooterEncVelocity = secondShooterEncoder.getVelocity();
     	
-    	SmartDashboard.putNumber("LeftShooterEncoderPosition",firstShooterEncPosition);
-    	SmartDashboard.putNumber("LeftShooterEncoderVelocity",firstShooterEncVelocity);
-    	SmartDashboard.putNumber("RightShooterEncoderPosition",secondShooterEncPosition);
-    	SmartDashboard.putNumber("RightShooterEncoderVelocity",secondShooterEncVelocity);
+    	//SmartDashboard.putNumber("LeftShooterEncoderPosition",firstShooterEncPosition);
+    	//SmartDashboard.putNumber("LeftShooterEncoderVelocity",firstShooterEncVelocity);
+    	//SmartDashboard.putNumber("RightShooterEncoderPosition",secondShooterEncPosition);
+    	//SmartDashboard.putNumber("RightShooterEncoderVelocity",secondShooterEncVelocity);
     
     	//logger.log(constants.logging);
     }
@@ -179,8 +180,11 @@ public class CombinedShooter extends Subsystem {
 	    		shooterPivotMotor.set(0);
 	    	}
 	    } */
+	    if((move > 0 && degrees < constants.minPot) || (move < 0 && degrees > constants.maxPot)){
+	    	shooterPivotMotor.set(0.00);
+	    }else{
 			shooterPivotMotor.set(-move*constants.shooterPivotSpeed);
-
+	    }
     }
     public void moveToFire(){
     	degrees = pot.get();
@@ -189,14 +193,30 @@ public class CombinedShooter extends Subsystem {
     		shoot = true;
     	}
     	else if(degrees > constants.shootPot + constants.potTolerance){
-    		shooterPivotMotor.set(-constants.shooterPivotSpeed);
+    		shooterPivotMotor.set(-constants.buttonPivotSpeed);
     		shoot = false;
     	}
     	else if(degrees < constants.shootPot - constants.potTolerance){
-    		shooterPivotMotor.set(constants.shooterPivotSpeed);
+    		shooterPivotMotor.set(constants.buttonPivotSpeed);
     		shoot = false;
     	}
 		SmartDashboard.putBoolean("PivotShoot", shoot);
+    }
+    public void moveToStart(){
+    	degrees = pot.get();
+    	if(degrees >= constants.startPot - constants.potTolerance && degrees <= constants.startPot + constants.potTolerance){
+    		shooterPivotMotor.set(0); 
+    		start = true;
+    	}
+    	else if(degrees > constants.startPot + constants.potTolerance){
+    		shooterPivotMotor.set(-constants.buttonPivotSpeed);
+    		start = false;
+    	}
+    	else if(degrees < constants.startPot - constants.potTolerance){
+    		shooterPivotMotor.set(constants.buttonPivotSpeed);
+    		start = false;
+    	}
+		SmartDashboard.putBoolean("StartConfig", start);
     }
     public void moveToIntake(){
     	degrees = pot.get();
@@ -205,11 +225,11 @@ public class CombinedShooter extends Subsystem {
     		intake = true;
     	}
     	else if(degrees > constants.intakePot + constants.potTolerance){
-    		shooterPivotMotor.set(-constants.shooterPivotSpeed);
+    		shooterPivotMotor.set(-constants.buttonPivotSpeed);
     		intake = false;
     	}
     	else if(degrees < constants.intakePot - constants.potTolerance){
-    		shooterPivotMotor.set(constants.shooterPivotSpeed);
+    		shooterPivotMotor.set(constants.buttonPivotSpeed);
     		intake = false;
     	}
 		SmartDashboard.putBoolean("PivotIntake", intake);
@@ -221,11 +241,11 @@ public class CombinedShooter extends Subsystem {
     		lowBar = true;
     	}
     	else if(degrees > constants.lowBarPot + constants.potTolerance){
-    		shooterPivotMotor.set(-constants.shooterPivotSpeed);
+    		shooterPivotMotor.set(-constants.buttonPivotSpeed);
     		lowBar = false;
     	}
     	else if(degrees < constants.lowBarPot - constants.potTolerance){
-    		shooterPivotMotor.set(constants.shooterPivotSpeed);
+    		shooterPivotMotor.set(constants.buttonPivotSpeed);
     		lowBar = false;
     	}
 		SmartDashboard.putBoolean("PivotLowBar", lowBar);

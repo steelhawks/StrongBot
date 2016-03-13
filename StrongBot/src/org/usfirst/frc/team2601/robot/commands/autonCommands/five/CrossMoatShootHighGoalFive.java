@@ -9,7 +9,7 @@ import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
-import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToFire;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -23,12 +23,13 @@ public class CrossMoatShootHighGoalFive extends CommandGroup {
 	
     public  CrossMoatShootHighGoalFive() {
        
-       	addSequential(new DriveFastForward(1.0));
-    	addSequential(new AutonFastTurnLeft(0.7));
-    	Timer.delay(1.0);;
+       	addSequential(new DriveFastForward(1.5));
+    	//addSequential(new AutonFastTurnLeft(0.45));
+    	Timer.delay(1.0);
     	if(constants.shootOrNot == Shoot_Auton.Yes){
-	    	addParallel(new AutonPistonShoot(2.0));
-	    	addSequential(new AutonRollerShoot(2.0));
+	    	addSequential(new AutonRollerShoot(1.0));
+	    	addParallel(new AutonRollerShoot(1.5));
+	    	addSequential(new AutonPistonShoot(1.5));
 	    	addSequential(new AutonPistonRetract(0.2));
     	}    	
     }

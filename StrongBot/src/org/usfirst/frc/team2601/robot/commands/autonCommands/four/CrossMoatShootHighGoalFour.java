@@ -6,7 +6,7 @@ import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
-import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToFire;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -20,7 +20,7 @@ public class CrossMoatShootHighGoalFour extends CommandGroup {
     	addSequential(new AutonShooterPivotUp(0.5));
     	addSequential(new DriveFastForward(2.5));
     	//addSequential(new AutonShooterPivotUp(0.85));
-    	addSequential(new MovePivotToFire());
+    	addSequential(new MoveToFire());
     	addParallel(new AutonPistonShoot(2.0));
     	addSequential(new AutonRollerShoot(2.0));
     	addSequential(new AutonPistonRetract(0.2));

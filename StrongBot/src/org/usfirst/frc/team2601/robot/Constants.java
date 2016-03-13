@@ -100,7 +100,8 @@ public class Constants {
     //public int scaleMultiplier = 1;
     public int shooterPivotUpMultiplier = -1;
     public int shooterPivotDownMultiplier = 1;
-    public double shooterPivotSpeed = 1.0;
+    public double shooterPivotSpeed = 0.75;
+    public double buttonPivotSpeed = 0.75;
     public double slowDrivetrainSpeed = 0.5;
     
   //autonomous commands and multipliers
@@ -145,8 +146,9 @@ public class Constants {
 	public int switchScaleMotorsButton = 4;
 	public int stopShootButton = 5;
 	public int triggerShooterButton = 1;
-	public int moveToFireButton = 9;
-	public int lowBarButton = 7;
+	public int moveToFireButton = 7;
+	public int moveToStartButton = 8;
+	public int lowBarButton = 9;
 	public int intakeButton = 10;
 	public int grapplingHook = 11;
 	
@@ -169,12 +171,13 @@ public class Constants {
 	public final double distancePerPulse = 0.5;
 	
 	//Potentiometer Shooter Pivot Values
-	public double maxPot = 369;
-	public double minPot = 285;
+	public double maxPot = 332;
+	public double minPot = 192;
+	public double startPot = 192;
 	public double shootPot = 420;
-	public double lowBarPot = 420;
-	public double intakePot = 148;
-	public double potTolerance = 5;	
+	public double lowBarPot = 323;
+	public double intakePot = 334;
+	public double potTolerance = 5;
 	
     private Constants(){
 	   if(system == System_Type.Beta){
@@ -186,7 +189,7 @@ public class Constants {
 		    
 		    leftRollerTalon = 5;//left
 		    rightRollerTalon = 6;//right
-		    shooterPivotTalon = 7;
+		    shooterPivotTalon = 0;//7
 		    
 		    winchTalon = 8;
 		    
@@ -209,11 +212,11 @@ public class Constants {
 		    
 		    leftRollerTalon = 5;
 		    rightRollerTalon = 6;
-		    shooterPivotTalon = 7;
+		    shooterPivotTalon = 0;
 		    
-		    armUpTalon = 8;//8
-		    armExtendTalon = 0;
-		    armRetractTalon = 12;//12
+		   // armUpTalon = 8;//8
+		    //armExtendTalon = 0;
+		    //armRetractTalon = 12;//12
 		    
 		    ultrasonicInput = 4;
 		    ultrasonicOutput = 5;

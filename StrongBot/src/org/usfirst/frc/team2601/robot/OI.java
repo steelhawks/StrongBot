@@ -11,7 +11,10 @@ import org.usfirst.frc.team2601.robot.commands.scaler.GrapplingHookPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.ContinuousShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.EStopShoot;
-import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToIntake;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToLowBar;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToStart;
 import org.usfirst.frc.team2601.robot.commands.shooter.ShooterPiston;
 import org.usfirst.frc.team2601.robot.subsystems.Drivetrain;
 
@@ -77,11 +80,20 @@ public class OI {
 	    	Button stopShoot= new JoystickButton(constants.shooter, constants.stopShootButton);
 	    	stopShoot.whenPressed(new EStopShoot());
 	    	
-	    	Button moveToFire = new JoystickButton(constants.shooter, constants.moveToFireButton);
-	    	moveToFire.whenPressed(new MovePivotToFire());
+	    	//Button moveToFire = new JoystickButton(constants.shooter, constants.moveToFireButton);
+	    	//moveToFire.whenPressed(new MoveToFire());
 	    	
-	    	Button grapplingHook = new JoystickButton(constants.shooter, constants.grapplingHook);
-	    	grapplingHook.whenPressed(new GrapplingHookPiston());
+	    	Button moveToStart = new JoystickButton(constants.shooter, constants.moveToStartButton);
+	    	moveToStart.whenPressed(new MoveToStart());
+	    	
+	    	Button moveToIntake = new JoystickButton(constants.shooter, constants.intakeButton);
+	    	moveToIntake.whenPressed(new MoveToIntake());
+	    	
+	    	Button moveToLB = new JoystickButton(constants.shooter, constants.lowBarButton);
+	    	moveToLB.whenPressed(new MoveToLowBar());
+	    	
+	    	//Button grapplingHook = new JoystickButton(constants.shooter, constants.grapplingHook);
+	    	//grapplingHook.whenPressed(new GrapplingHookPiston());
 	   // }
 	}
 }

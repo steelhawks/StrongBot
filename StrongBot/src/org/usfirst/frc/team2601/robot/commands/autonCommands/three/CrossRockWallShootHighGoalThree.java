@@ -5,7 +5,7 @@ import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
-import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToFire;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;

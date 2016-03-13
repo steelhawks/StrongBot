@@ -6,7 +6,7 @@ import org.usfirst.frc.team2601.robot.commands.drivetrain.AutoAlign;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
-import org.usfirst.frc.team2601.robot.commands.shooter.MovePivotToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToFire;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -18,7 +18,7 @@ public class VisionAutonTest extends CommandGroup {
     public  VisionAutonTest() {
     	
     	addSequential(new DriveFastForward(2.0));
-    	addSequential(new MovePivotToFire());
+    	addSequential(new MoveToFire());
     	addSequential(new ReadCorners());
     	addSequential(new AutoAlign());
     	addParallel(new AutonRollerShoot(2.0));
