@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.Robot;
+import org.usfirst.frc.team2601.robot.commands.CameraServo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import com.ni.vision.NIVision.Point;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.networktables2.type.NumberArray;
@@ -26,13 +29,16 @@ public class Camera extends Subsystem {
     // here. Call these from Commands.
 	
 	Constants constants = Constants.getInstance();
+
+	double angle;
+	double pivotPosition;
 	
 	public int x = 0;
 	public int y = 0;
 	int s;
 	public boolean aligned = false;
 
-
+	public Servo servo = new Servo(4);
 	public ArrayList<Point> leftCoords = new ArrayList<Point>();
 	public ArrayList<Point> rightCoords = new ArrayList<Point>();	
 	public Point UL = new Point();
@@ -43,8 +49,21 @@ public class Camera extends Subsystem {
 	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+		setDefaultCommand(new CameraServo());
     }
     @SuppressWarnings("deprecation")
+    public void parallel(Joystick stick){
+    	double throttle = stick.getThrottle();
+    	servo.set((throttle+1)*0.5);
+    	//SmartDashboard.putNumber("Servo get", servo.get());
+    	SmartDashboard.putNumber("Servo angle", servo.getAngle());
+    	SmartDashboard.putNumber("Servo position", servo.getPosition());
+    }
+    public void cameraToPivot(){
+    	pivotPosition = ((Robot.combinedshooter.degrees - constants.minPot)/(constants.maxPot - constants.minPot));
+    	angle = ((pivotPosition*(constants.maxServoAngle - constants.minServoAngle)) + constants.minServoAngle);
+    	servo.setAngle(angle);
+    }
 	public void read(){
     	NetworkTable server = NetworkTable.getTable("/");
 		//ArrayList<Integer> xValues = new ArrayList<Integer>();

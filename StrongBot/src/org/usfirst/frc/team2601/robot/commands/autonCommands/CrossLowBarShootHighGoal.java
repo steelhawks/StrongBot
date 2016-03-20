@@ -2,6 +2,7 @@ package org.usfirst.frc.team2601.robot.commands.autonCommands;
 
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.Constants.Shoot_Auton;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonDrivetrainToDriverStation;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnRight;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastBackward;
@@ -10,10 +11,13 @@ import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveSlowForward;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerIntake;
+import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotDown;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
 import org.usfirst.frc.team2601.robot.commands.shooter.MoveToFire;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToLowBar;
+import org.usfirst.frc.team2601.robot.commands.shooter.MoveToStart;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -27,22 +31,16 @@ public class CrossLowBarShootHighGoal extends CommandGroup {
 	
     public  CrossLowBarShootHighGoal() {
     	
-    	/*addParallel(new DriveSlowForward(1.0));
-    	addSequential(new AutonRollerIntake(0.1));
-    	Timer.delay(0.1);*/
-    	//addSequential(new AutonShooterPivotUp(0.2));
-    	addSequential(new AutonShooterPivotDown(1.07));
+    	
+    	addSequential(new MoveToLowBar());
     	addSequential(new DriveFastForward(1.25));
-    	addSequential(new AutonFastTurnRight(0.45));
-    	//addSequential(new MovePivotToFire());
-    	addSequential(new AutonShooterPivotUp(1.0));
+    	addSequential(new AutonDrivetrainToDriverStation());
+    	addSequential(new AutonFastTurnRight(0.25));//0,45 90degree turn
+    	addSequential(new MoveToFire());
     	Timer.delay(0.1);
-    	if(constants.shootOrNot == Shoot_Auton.Yes){
-    		addSequential(new AutonRollerShoot(1.0));
-    		addParallel(new AutonRollerShoot(1.5));
-    		addSequential(new AutonPistonShoot(1.5));
-    		addSequential(new AutonPistonRetract(0.2));
-    	}
+    	//if(constants.shootOrNot == Shoot_Auton.Yes){
+    	addSequential(new AutonRollerShoot(0.5));
+        addSequential(new AutonRollerPiston(1.0));
     	
     	// Add Commands here:
         // e.g. addSequential(new Command1());

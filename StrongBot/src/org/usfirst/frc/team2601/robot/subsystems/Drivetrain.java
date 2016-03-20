@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team2601.robot.Constants;
 import org.usfirst.frc.team2601.robot.commands.Drive;
+import org.usfirst.frc.team2601.robot.commands.SlowDrive;
 import org.usfirst.frc.team2601.robot.util.*;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -40,14 +41,17 @@ public class Drivetrain extends Subsystem {
 	
 	Ultrasonic ultrasonic = new Ultrasonic(constants.ultrasonicInput, constants.ultrasonicOutput);
 	double ultrasonicValue;
+	double autonUltrasonicValue;
+	public boolean autonUltrasonic = false;
 	
 	RobotDrive drive = new RobotDrive(frontLeftMotor, frontRightMotor);
 	
 	PIDController leftSide;
 	PIDController rightSide;
 	
-	Encoder leftEncoder;
-	Encoder rightEncoder;
+	Encoder leftEncoder = new Encoder(constants.leftEncoderPortI, constants.leftEncoderPortII, false, EncodingType.k4X);
+	Encoder rightEncoder = new Encoder(constants.rightEncoderPortI, constants.rightEncoderPortII, true, EncodingType.k4X);
+	
     
 	private boolean gear = true;
 	//this is used for the logger
@@ -58,8 +62,8 @@ public class Drivetrain extends Subsystem {
     // here. Call these from Commands.
 	public Drivetrain(){
 		try{
-			leftEncoder = new Encoder(constants.leftEncoderPortI, constants.leftEncoderPortII, false, EncodingType.k4X);
-			rightEncoder = new Encoder(constants.rightEncoderPortI, constants.rightEncoderPortII, true, EncodingType.k4X);
+			//leftEncoder = new Encoder(constants.leftEncoderPortI, constants.leftEncoderPortII, false, EncodingType.k4X);
+			//rightEncoder = new Encoder(constants.rightEncoderPortI, constants.rightEncoderPortII, true, EncodingType.k4X);
 		//try catch
 			leftSide = new PIDController(constants.kP, constants.kI, constants.kD, constants.kF, leftEncoder, frontLeftMotor);
 			rightSide = new PIDController(constants.kP,constants.kI, constants.kD, constants.kF, rightEncoder,frontRightMotor);
@@ -70,10 +74,10 @@ public class Drivetrain extends Subsystem {
 		rightSide.setPercentTolerance(constants.PIDtolerance);
 		
 		//ready encoders
-	    leftEncoder.setDistancePerPulse(constants.distancePerPulse);
-		rightEncoder.setDistancePerPulse(constants.distancePerPulse);
+	    //leftEncoder.setDistancePerPulse(constants.distancePerPulse);
+		//rightEncoder.setDistancePerPulse(constants.distancePerPulse);
 
-		//gyro.reset();
+		gyro.reset();
 	//	loggingList.add(frontLeftMotor);
 	//	loggingList.add(backLeftMotor);
 	//	loggingList.add(frontRightMotor);
@@ -110,10 +114,15 @@ public class Drivetrain extends Subsystem {
     	//logger.log(constants.logging);
     }
     public void arcadeDrive(double move, double rotate){
-    	drive.arcadeDrive(move, rotate);
+    	drive.arcadeDrive(move, rotate * constants.twistMultiplier);
     	matchMotors(frontLeftMotor, backLeftMotor);
     	matchMotors(frontRightMotor, backRightMotor);
         //logger.log(constants.logging);
+    	
+    	SmartDashboard.putNumber("LeftEncoder", leftEncoder.get());
+    	SmartDashboard.putNumber("RightEncoder", rightEncoder.get());
+    	SmartDashboard.putNumber("LeftEncoderDistance", leftEncoder.getDistance());
+    	SmartDashboard.putNumber("RightEncoderDistance", rightEncoder.getDistance());
     	
     	ultrasonicValue = ultrasonic.getRangeInches();
         SmartDashboard.putNumber("UltrasonicDistance", ultrasonicValue);
@@ -121,8 +130,6 @@ public class Drivetrain extends Subsystem {
     	//gyro.reset();
     	gyroAngle = gyro.getAngle();
     	SmartDashboard.putNumber("Gyro Angle", gyroAngle);
-    	gyroRate = gyro.getRate();
-    	SmartDashboard.putNumber("Gyro Rate", gyroRate);
     }
     public void arcadeDriveX(Joystick stick){
     	double move = stick.getY();
@@ -132,12 +139,12 @@ public class Drivetrain extends Subsystem {
     public void arcadeDriveTwist(Joystick stick){
     	double move = stick.getY();
     	double rotate = stick.getTwist();
-    	arcadeDrive(move,rotate);
+    	arcadeDrive(move, rotate);
     }
     public void slowArcadeDriveTwist(Joystick stick){
     	double move = stick.getY()*constants.slowDrivetrainSpeed;
     	double rotate = stick.getTwist()*constants.slowDrivetrainSpeed;
-    	arcadeDrive(move,rotate);
+    	arcadeDrive(move, rotate);
     }
     public void shiftGears(){
     	if (rightShift.get() == HawkDoubleSolenoid.Value.kForward){
@@ -167,6 +174,12 @@ public class Drivetrain extends Subsystem {
     	gyroAngle = gyro.getAngle();
     	drive.drive(-0.5, -gyroAngle * Kp);
     	Timer.delay(0.003);
+    }
+    public void autonLowBarForward(){
+    	frontLeftMotor.set(constants.autonLowBarSpeed*constants.leftDrivetrainMultiplier);
+    	backLeftMotor.set(constants.autonLowBarSpeed*constants.leftDrivetrainMultiplier);
+    	frontRightMotor.set(constants.autonLowBarSpeed*constants.rightDrivetrainMultiplier);
+    	backRightMotor.set(constants.autonLowBarSpeed*constants.rightDrivetrainMultiplier);
     }
     public void autonFastMoveForward(){
     	frontLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
@@ -221,6 +234,23 @@ public class Drivetrain extends Subsystem {
     	backLeftMotor.set(0);
     	frontRightMotor.set(0);
     	backRightMotor.set(0);
+    }
+    public void autonToDriverStation(double autonUltrasonicDistance){
+    	autonUltrasonicValue = ultrasonic.getRangeInches();
+    	if(autonUltrasonicValue <= autonUltrasonicDistance + constants.autonUltrasonicTolerance){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	autonUltrasonic = true;
+    	}
+    	if(autonUltrasonicValue > autonUltrasonicDistance + constants.autonUltrasonicTolerance){
+    		frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	autonUltrasonic = false;
+    	}
     }
   /*//this variable locks in the BangBang method, allows it to set final distance once per successful run.
     private boolean bangBangStarted = false;

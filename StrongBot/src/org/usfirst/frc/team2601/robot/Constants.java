@@ -27,17 +27,11 @@ public class Constants {
 	public enum Driver_Type {Arcade, Tank, Gamepad};
 	public Driver_Type driver = Driver_Type.Arcade;
 	
-	public enum System_Mode {All, DriveOnly, ShootOnly};  // pfw - added to toggle between shooting & driving for testing
-	public System_Mode mode = System_Mode.ShootOnly;
-	
-	public enum Test_Mode {MarcusWeirdTest, Regular}; //MarcusWeirdTest puts shooting controls onto the driver stick
-	public Test_Mode test = Test_Mode.Regular;
-	
 	public enum Claw_Type {Circle, Square};
 	public Claw_Type claw = Claw_Type.Circle;
 	
 	public enum Shoot_Auton {Yes, No};
-	public Shoot_Auton shootOrNot = Shoot_Auton.No;
+	public Shoot_Auton shootOrNot = Shoot_Auton.Yes;
 	
 	public final boolean PNEUMATICS_ON = true;
 		
@@ -93,16 +87,18 @@ public class Constants {
     public int bottomRollerMultiplier = 1;
     
     public int rollerSpeed = 1;
-    public double intakeSpeed = 1;
+    public double intakeSpeed = 0.5;
+    public double ballCorrectionSpeed = 0.2;
     
     public double scaleSpeed = 1.0;
     public double armUpSpeed = 0.5;
     //public int scaleMultiplier = 1;
     public int shooterPivotUpMultiplier = -1;
     public int shooterPivotDownMultiplier = 1;
-    public double shooterPivotSpeed = 0.75;
-    public double buttonPivotSpeed = 0.75;
-    public double slowDrivetrainSpeed = 0.5;
+    public double twistMultiplier = 0.75;
+    public double shooterPivotSpeed = 1.0;
+    public double buttonPivotSpeed = 1.0;
+    public double slowDrivetrainSpeed = 0.75;
     
   //autonomous commands and multipliers
   	//drivetrain
@@ -112,16 +108,17 @@ public class Constants {
   	public double autonSlowBackward = 0.5;
   	public double autonTurnSpeed = 1.0;
   	public double autonSlowTurnSpeed = 0.5;
-
+  	public double autonLowBarSpeed = -0.75;
+  	
   	public double leftDrivetrainMultiplier = 1;
   	public double rightDrivetrainMultiplier = -1;
   	
   	//shooter
   	public double autonShootSpeed = 1.0;
   	public double autonIntakeSpeed = -0.5;
-  		
+  	
   	//shooter pivot
-  	public double autonPivotSpeed = 0.75;
+  	public double autonPivotSpeed = 1.0;
   	public double autonSlowPivotSpeed = 0.5;
   	
     //Joysticks
@@ -133,24 +130,27 @@ public class Constants {
     //Driver Buttons
     public int shiftButton = 1;
     public int slowDrivetrainButton = 2;
-    public int vision = 11;
-    public int driverContinouousWheelsButton = 9;
-    public int driverPistonButton = 10;
+    public int visionButton = 10;
     public int gyroResetButton = 3;
-    public int stopMotors = 5;
+    public int stopMotorsButton = 7;
     public int alignButton = 12;
+    public int driverContinouousWheelsButton = 11;
+    public int driverPistonButton = 12;
+    public int driverStopShootButton = 9;
     
 	//Operator Buttons
-	public int continuousWheelsButton = 2;
-	public int pistonButton = 3;
-	public int switchScaleMotorsButton = 4;
-	public int stopShootButton = 5;
+	public int continuousWheelsButton = 3;	//2 on the old joystick
 	public int triggerShooterButton = 1;
-	public int moveToFireButton = 7;
-	public int moveToStartButton = 8;
-	public int lowBarButton = 9;
-	public int intakeButton = 10;
-	public int grapplingHook = 11;
+	public int pistonButton = 5;
+	public int stopShootButton = 6;
+	public int potStartButton = 8;
+	public int potFireButton = 7;
+	public int potlowBarButton = 9;
+	public int potintakeButton = 11;
+	//public int switchScaleMotorsButton = 4;
+	//public int grapplingHook = 6;
+	public int ballCorrectionLeftButton = 10;
+	public int ballCorrectionRightButton = 12;
 	
 	//variables that shouldn't be in constants
 	//public boolean scale;//used to switch between the two motors
@@ -171,13 +171,21 @@ public class Constants {
 	public final double distancePerPulse = 0.5;
 	
 	//Potentiometer Shooter Pivot Values
-	public double maxPot = 332;
-	public double minPot = 192;
-	public double startPot = 192;
-	public double shootPot = 420;
-	public double lowBarPot = 323;
-	public double intakePot = 334;
+	public double maxPot = 280;	//lowest/2
+	public double minPot = 140;	//highest
+	public double startPot = 139;
+	public double shootPot = 130;
+	public double lowBarPot = 268;
+	public double intakePot = 283;
 	public double potTolerance = 5;
+	
+	//Servo Pivot Values
+	public double maxServoAngle = 140;
+	public double minServoAngle = 90;
+
+	//autonUltrasonicValue
+	//public double autonUltrasonicDistance = 100;
+	public double autonUltrasonicTolerance = 10;
 	
     private Constants(){
 	   if(system == System_Type.Beta){

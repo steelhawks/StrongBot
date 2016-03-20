@@ -8,6 +8,7 @@ import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastForward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveSlowForward;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonShoot;
+import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerPiston;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonRollerShoot;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotDown;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonShooterPivotUp;
@@ -34,9 +35,8 @@ public class CrossChevalDeFriseShootHighGoalFive extends CommandGroup {
     	addSequential(new AutonFastTurnLeft(0.7));
     	Timer.delay(1.0);
     	if(constants.shootOrNot == Shoot_Auton.Yes){
-    		addParallel(new AutonRollerShoot(2.0));
-    		addSequential(new AutonPistonShoot(2.0));
-    		addSequential(new AutonPistonRetract(0.2));
+    		addSequential(new AutonRollerShoot(0.5));
+        	addSequential(new AutonRollerPiston(1.0));
     	}
     }
 }

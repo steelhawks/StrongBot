@@ -17,7 +17,7 @@ public class VisionAutonTest extends CommandGroup {
     
     public  VisionAutonTest() {
     	
-    	addSequential(new DriveFastForward(2.0));
+    	//addSequential(new DriveFastForward(2.0));
     	addSequential(new MoveToFire());
     	addSequential(new ReadCorners());
     	addSequential(new AutoAlign());

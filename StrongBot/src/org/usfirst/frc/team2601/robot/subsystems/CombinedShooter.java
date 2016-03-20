@@ -34,21 +34,21 @@ public class CombinedShooter extends Subsystem {
 	HawkDoubleSolenoid rightShootForward = new HawkDoubleSolenoid(constants.rightShooterSolenoidOn, constants.rightShooterSolenoidOff, "shootingSolenoid");
 
 	//CANTalons
-	HawkCANTalon leftRollerMotor = new HawkCANTalon(constants.leftRollerTalon, "leftRollerMotor");
-	HawkCANTalon rightRollerMotor = new HawkCANTalon(constants.rightRollerTalon, "rightRollerMotor");
+	public HawkCANTalon leftRollerMotor = new HawkCANTalon(constants.leftRollerTalon, "leftRollerMotor");
+	public HawkCANTalon rightRollerMotor = new HawkCANTalon(constants.rightRollerTalon, "rightRollerMotor");
 	HawkCANTalon shooterPivotMotor = new HawkCANTalon(constants.shooterPivotTalon, "shooterPivotMotor");
 	
 	//TalonEncoder firstShooterEncoder = new TalonEncoder(leftRollerMotor); //left
 	//TalonEncoder secondShooterEncoder = new TalonEncoder(rightRollerMotor); //right
 	
-	AnalogPotentiometer pot = new AnalogPotentiometer(constants.shooterPivotPotAnalogPin,360,60);
+	public AnalogPotentiometer pot = new AnalogPotentiometer(constants.shooterPivotPotAnalogPin,360,60);
 	
 	public double firstShooterEncPosition;
 	public double firstShooterEncVelocity;
 	public double secondShooterEncPosition;
 	public double secondShooterEncVelocity;
 		
-	double degrees;
+	public double degrees;
 	
 	public boolean start;
 	public boolean shoot;
@@ -123,9 +123,9 @@ public class CombinedShooter extends Subsystem {
     	double move = stick.getTwist();
     	leftRollerMotor.set(move*constants.topRollerMultiplier*constants.rollerSpeed);
     	rightRollerMotor.set(move*constants.bottomRollerMultiplier*constants.rollerSpeed);
-    	if(stick.getTwist()<0){
-    		leftRollerMotor.set(move*constants.topRollerMultiplier*constants.intakeSpeed);
-        	rightRollerMotor.set(move*constants.bottomRollerMultiplier*constants.intakeSpeed);
+    	if(stick.getTwist() < 0){
+    		leftRollerMotor.set(move*constants.topRollerMultiplier*constants.rollerSpeed/*constants.intakeSpeed*/);
+        	rightRollerMotor.set(move*constants.bottomRollerMultiplier*constants.rollerSpeed/*constants.intakeSpeed*/);
     	}
     	//Talon Encoders
     	//firstShooterEncPosition = firstShooterEncoder.getPosition();
@@ -140,6 +140,12 @@ public class CombinedShooter extends Subsystem {
     	//SmartDashboard.putNumber("RightShooterEncoderVelocity",secondShooterEncVelocity);
     
     	//logger.log(constants.logging);
+    }
+    public void ballCorrectionLeft(){
+    	leftRollerMotor.set(constants.ballCorrectionSpeed * constants.topRollerMultiplier);
+    }
+    public void ballCorrectionRight(){
+    	rightRollerMotor.set(constants.ballCorrectionSpeed * constants.bottomRollerMultiplier);
     }
     public void spinRollers(){
    		leftRollerMotor.set(constants.rollerSpeed*constants.topRollerMultiplier);
@@ -161,25 +167,10 @@ public class CombinedShooter extends Subsystem {
     }
     public void manualShooterPivot(Joystick stick){
     	//Actuator Potentiometers
+	    degrees = pot.get();
     	SmartDashboard.putNumber("ShooterPivotPotentiometerDegree", degrees);   
 	    double move = stick.getY();
-	    degrees = pot.get();
-	    /*if (move > 0){ //stickback
-	    	if(degrees>constants.minPot){
-	        	shooterPivotMotor.set(-move*constants.shooterPivotSpeed);
-	   		}
-	   		else{
-	   			shooterPivotMotor.set(0);
-	    	}
-	   	}
-	    if (move < 0){ //stickforward
-	   		if (degrees < constants.maxPot){
-	   			shooterPivotMotor.set(-move*constants.shooterPivotSpeed);
-		   	}
-	    	else{
-	    		shooterPivotMotor.set(0);
-	    	}
-	    } */
+	    //shooterPivotMotor.set(-move * constants.shooterPivotSpeed);
 	    if((move > 0 && degrees < constants.minPot) || (move < 0 && degrees > constants.maxPot)){
 	    	shooterPivotMotor.set(0.00);
 	    }else{
