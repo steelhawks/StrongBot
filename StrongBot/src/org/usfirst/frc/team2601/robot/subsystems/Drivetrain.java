@@ -40,6 +40,7 @@ public class Drivetrain extends Subsystem {
 	double gyroRate;
 	public boolean autonGyroTurnRight = false;
 	public boolean autonGyroTurnLeft = false;
+	public boolean autonGyroCorrection = false;
     double Kp = 0.03;
 	
 	Ultrasonic ultrasonic = new Ultrasonic(constants.ultrasonicInput, constants.ultrasonicOutput);
@@ -132,9 +133,7 @@ public class Drivetrain extends Subsystem {
     	ultrasonicValue = ultrasonic.getRangeInches();
         SmartDashboard.putNumber("UltrasonicDistance", ultrasonicValue);
     
-    	//gyro.reset();
     	gyroAngle = gyro.getAngle();
-    	//gyroAngle = gyro.
     	SmartDashboard.putNumber("Gyro Angle", gyroAngle);
     }
     public void arcadeDriveX(Joystick stick){
@@ -166,7 +165,6 @@ public class Drivetrain extends Subsystem {
     }
     public void gyroReset(){
     	gyro.reset();
-    	//gyro.calibrate();
     }
     private void matchSolenoids(){
     	leftShift.set(rightShift.get());
@@ -310,28 +308,28 @@ public class Drivetrain extends Subsystem {
         	autonGyroTurnLeft = false;
     	}
     }
-    public void autonGyroCorrection(){//not fixed
+    public void autonGyroCorrection(){
     	autonGyroAngle = gyro.getAngle();
     	if(autonGyroAngle <= constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
     		frontLeftMotor.set(0);
         	backLeftMotor.set(0);
         	frontRightMotor.set(0);
         	backRightMotor.set(0);
-  
+        	autonGyroCorrection = true;
     	}
     	else if(autonGyroAngle > constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
     		frontLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
         	backLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
         	frontRightMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
         	backRightMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
-        	
+        	autonGyroCorrection = false;
     	}
     	else if(autonGyroAngle < constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
     		frontLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
         	backLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
         	frontRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
         	backRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
-        	
+        	autonGyroCorrection = false;
     	}
     }	
     public void autonForwardEncoder(){
