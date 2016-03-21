@@ -317,7 +317,7 @@ public class Drivetrain extends Subsystem {
         	backLeftMotor.set(0);
         	frontRightMotor.set(0);
         	backRightMotor.set(0);
-        	
+  
     	}
     	else if(autonGyroAngle > constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
     		frontLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
