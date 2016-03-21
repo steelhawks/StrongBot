@@ -5,6 +5,7 @@ import org.usfirst.frc.team2601.robot.Constants.Shoot_Auton;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonDrivetrainToDriverStation;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnRight;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnLeftToLowGoal;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastForward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveSlowForward;
 import org.usfirst.frc.team2601.robot.commands.shooter.AutonPistonRetract;
@@ -29,14 +30,15 @@ public class CrossMoatShootHighGoalFive extends CommandGroup {
     public  CrossMoatShootHighGoalFive() {
        
     	addSequential(new MoveToStart());
-    	addSequential(new DriveFastForward(2.0));
+    	addSequential(new DriveFastForward(1.0));
     	addSequential(new AutonDrivetrainToDriverStation());
     	//Timer.delay(1.0);
     	addSequential(new MoveToLowBar());
-    	addSequential(new AutonFastTurnLeft(0.36));//0.5 90 degreee turn
-    	addSequential(new DriveSlowForward(1.0));
+    	//addSequential(new AutonFastTurnLeft(0.36));//0.5 90 degreee turn
+    	addSequential(new AutonTurnLeftToLowGoal());
+    	addSequential(new DriveSlowForward(1.25));
     	//if(constants.shootOrNot == Shoot_Auton.Yes){
-    	addSequential(new AutonRollerShoot(0.5));
-       	addSequential(new AutonRollerPiston(1.0));
+    	addSequential(new AutonRollerShoot(0.25));
+    	addSequential(new AutonRollerPiston(1.0));
     }
 }

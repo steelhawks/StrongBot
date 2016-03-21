@@ -1,10 +1,14 @@
 package org.usfirst.frc.team2601.robot.commands.autonCommands;
 
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonBackwardEncoder;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonDrivetrainToDriverStation;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonEncoderForward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnRight;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonSlowTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonSlowTurnRight;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnLeftToLowGoal;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnRightToLowGoal;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastBackward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastForward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveSlowBackward;
@@ -65,8 +69,11 @@ public class AutonTest extends CommandGroup {
     	//addParallel(new AutonRollerShoot(5.0));
     	//addParallel(new AutonRollerShooterWait());
     	//addSequential(new MoveToStart());
-    	addSequential(new AutonRollerShoot(0.5));
-    	addSequential(new AutonRollerPiston(1.0));
+    	//addSequential(new AutonRollerShoot(0.5));
+    	//addSequential(new AutonRollerPiston(1.0));
+    	//addSequential(new AutonTurnLeftToLowGoal());
+    	addSequential(new AutonEncoderForward());
+    	addSequential(new AutonBackwardEncoder());
     	//addSequential(new MoveToIntake());
     	//addSequential(new MoveToLowBar());
     	//addSequential(new AutonDrivetrainToDriverStation());

@@ -34,9 +34,12 @@ public class Drivetrain extends Subsystem {
 	HawkDoubleSolenoid leftShift = new HawkDoubleSolenoid(constants.leftSolenoidOn,constants.leftSolenoidOff, "leftSolenoid");
 	HawkDoubleSolenoid rightShift = new HawkDoubleSolenoid(constants.rightSolenoidOn,constants.rightSolenoidOff, "rightSolenoid");
 	
-	public Gyro gyro = new AnalogGyro(constants.gyroAnalogPin);
+	public AnalogGyro gyro = new AnalogGyro(constants.gyroAnalogPin);
 	double gyroAngle;
+	double autonGyroAngle;
 	double gyroRate;
+	public boolean autonGyroTurnRight = false;
+	public boolean autonGyroTurnLeft = false;
     double Kp = 0.03;
 	
 	Ultrasonic ultrasonic = new Ultrasonic(constants.ultrasonicInput, constants.ultrasonicOutput);
@@ -51,7 +54,8 @@ public class Drivetrain extends Subsystem {
 	
 	Encoder leftEncoder = new Encoder(constants.leftEncoderPortI, constants.leftEncoderPortII, false, EncodingType.k4X);
 	Encoder rightEncoder = new Encoder(constants.rightEncoderPortI, constants.rightEncoderPortII, true, EncodingType.k4X);
-	
+	public boolean autonEncoderForward = false;
+	public boolean autonEncoderBackward = false;
     
 	private boolean gear = true;
 	//this is used for the logger
@@ -76,8 +80,9 @@ public class Drivetrain extends Subsystem {
 		//ready encoders
 	    //leftEncoder.setDistancePerPulse(constants.distancePerPulse);
 		//rightEncoder.setDistancePerPulse(constants.distancePerPulse);
-
+		gyro.initGyro();
 		gyro.reset();
+		gyro.calibrate();
 	//	loggingList.add(frontLeftMotor);
 	//	loggingList.add(backLeftMotor);
 	//	loggingList.add(frontRightMotor);
@@ -129,6 +134,7 @@ public class Drivetrain extends Subsystem {
     
     	//gyro.reset();
     	gyroAngle = gyro.getAngle();
+    	//gyroAngle = gyro.
     	SmartDashboard.putNumber("Gyro Angle", gyroAngle);
     }
     public void arcadeDriveX(Joystick stick){
@@ -160,6 +166,7 @@ public class Drivetrain extends Subsystem {
     }
     public void gyroReset(){
     	gyro.reset();
+    	//gyro.calibrate();
     }
     private void matchSolenoids(){
     	leftShift.set(rightShift.get());
@@ -250,6 +257,127 @@ public class Drivetrain extends Subsystem {
         	frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
         	backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
         	autonUltrasonic = false;
+    	}
+    }
+    public void autonTurnRightToHighGoal(){
+    	autonGyroAngle = gyro.getAngle();
+    	if(autonGyroAngle >= constants.autonGyroAngleLeftHighGoal + constants.autonGyroTolerance){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	autonGyroTurnRight = true;
+    	}
+    	if(autonGyroAngle < constants.autonGyroAngleLeftHighGoal + constants.autonGyroTolerance){
+    		frontLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	autonGyroTurnRight = false;
+    	}
+    }
+    public void autonTurnRightToLowGoal(){
+    	autonGyroAngle = gyro.getAngle();
+    	if(autonGyroAngle >= constants.autonGyroAngleLeftLowGoal + constants.autonGyroTolerance){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	autonGyroTurnRight = true;
+    	}
+    	if(autonGyroAngle < constants.autonGyroAngleLeftLowGoal + constants.autonGyroTolerance){
+    		frontLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	autonGyroTurnRight = false;
+    	}
+    }
+    public void autonTurnLeftToLowGoal(){
+    	autonGyroAngle = gyro.getAngle();
+    	if(autonGyroAngle <= constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	autonGyroTurnLeft = true;
+    	}
+    	if(autonGyroAngle > constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
+    		frontLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+        	autonGyroTurnLeft = false;
+    	}
+    }
+    public void autonGyroCorrection(){//not fixed
+    	autonGyroAngle = gyro.getAngle();
+    	if(autonGyroAngle <= constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	
+    	}
+    	else if(autonGyroAngle > constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
+    		frontLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowBackward*constants.leftDrivetrainMultiplier);
+        	
+    	}
+    	else if(autonGyroAngle < constants.autonGyroAngleRightLowGoal - constants.autonGyroTolerance){
+    		frontLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowBackward*constants.rightDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	
+    	}
+    }	
+    public void autonForwardEncoder(){
+    	if(leftEncoder.get() == rightEncoder.get() || leftEncoder.get() - rightEncoder.get() <= 100 || leftEncoder.get() + rightEncoder.get() >= -100){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	autonEncoderForward = true;
+    	}
+    	else if(leftEncoder.get() > rightEncoder.get()){
+    		frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+        	autonEncoderForward = false;
+    	}
+    	else if(leftEncoder.get() < rightEncoder.get()){
+    		frontLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	autonEncoderForward = false;
+    	}
+    }
+    public void autonBackwardEncoder(){
+    	if(leftEncoder.get() == rightEncoder.get() || leftEncoder.get() - rightEncoder.get() <= 100 || leftEncoder.get() + rightEncoder.get() >= -100){
+    		frontLeftMotor.set(0);
+        	backLeftMotor.set(0);
+        	frontRightMotor.set(0);
+        	backRightMotor.set(0);
+        	autonEncoderBackward = true;
+    	}
+    	else if(leftEncoder.get() > rightEncoder.get()){
+    		frontLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonForward*constants.leftDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonSlowForward*constants.rightDrivetrainMultiplier);
+        	autonEncoderBackward = false;
+        }
+    	else if(leftEncoder.get() < rightEncoder.get()){
+    		frontLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	backLeftMotor.set(constants.autonSlowForward*constants.leftDrivetrainMultiplier);
+        	frontRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+        	backRightMotor.set(constants.autonForward*constants.rightDrivetrainMultiplier);
+        	autonEncoderBackward = false;
     	}
     }
   /*//this variable locks in the BangBang method, allows it to set final distance once per successful run.

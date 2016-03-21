@@ -115,7 +115,7 @@ public class Robot extends IterativeRobot {
 	        chooser.addDefault("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
 	        chooser.addDefault("AutonTest", new AutonTest());
 	        chooser.addObject("CrossLowBarShootLowGoal", new CrossLowBarShootLowGoal());
-	        //chooser.addObject("Gyro Forward", new GyroForward());
+	        chooser.addObject("Gyro Forward", new GyroForward());
 	        //chooser.addObject("LowBarCross", new CrossLowBar());
 	        chooser.addObject("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
 	        chooser.addObject("AutonVision", new VisionAutonTest());

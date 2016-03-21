@@ -40,20 +40,20 @@ public class OI {
 	    	Button shift = new JoystickButton(constants.stick, constants.shiftButton);
 	    	shift.whenPressed(new Shift());
 	    	
-	    	Button slowDrivetrain = new JoystickButton(constants.stick, constants.slowDrivetrainButton);
-	    	slowDrivetrain.whileHeld(new SlowDrive());
+	    	//Button slowDrivetrain = new JoystickButton(constants.stick, constants.slowDrivetrainButton);
+	    	//slowDrivetrain.whileHeld(new SlowDrive());
 	    	
 	    	Button gyroReset = new JoystickButton(constants.stick, constants.gyroResetButton);
 	    	gyroReset.whenPressed(new GyroReset());
 	    	
-	    	Button vision = new JoystickButton(constants.stick, constants.visionButton);
-	    	vision.whenPressed(new ReadCorners());
+	    	//Button vision = new JoystickButton(constants.stick, constants.visionButton);
+	    	//vision.whenPressed(new ReadCorners());
 	    	
 	    	Button stop = new JoystickButton(constants.stick, constants.stopMotorsButton);
 	    	stop.whileHeld(new StopMotors());
 	    	
-	    	Button align = new JoystickButton(constants.stick, constants.alignButton);
-	    	align.whenPressed(new AutoAlign());
+	    	//Button align = new JoystickButton(constants.stick, constants.alignButton);
+	    	//align.whenPressed(new AutoAlign());
 	    	
 	    	Button driverContinuousWheels = new JoystickButton(constants.stick, constants.driverContinouousWheelsButton);
 	   		driverContinuousWheels.whenPressed(new ContinuousShoot());
@@ -61,8 +61,8 @@ public class OI {
 	    	Button driverPiston = new JoystickButton(constants.stick, constants.driverPistonButton);
 	    	driverPiston.whenPressed(new ContinuousPiston());
 	    	
-	    	Button driverstopShoot= new JoystickButton(constants.stick, constants.driverStopShootButton);
-	    	driverstopShoot.whenPressed(new EStopShoot());
+	    	Button driverStopShoot= new JoystickButton(constants.stick, constants.driverStopShootButton);
+	    	driverStopShoot.whenPressed(new EStopShoot());
 	    
 	    //Operator Controls
 	    	Button triggerShooter = new JoystickButton(constants.shooter, constants.triggerShooterButton);

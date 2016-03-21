@@ -109,6 +109,7 @@ public class Constants {
   	public double autonTurnSpeed = 1.0;
   	public double autonSlowTurnSpeed = 0.5;
   	public double autonLowBarSpeed = -0.75;
+  	//public double autonGyroSpeed = 0.5;
   	
   	public double leftDrivetrainMultiplier = 1;
   	public double rightDrivetrainMultiplier = -1;
@@ -172,9 +173,9 @@ public class Constants {
 	
 	//Potentiometer Shooter Pivot Values
 	public double maxPot = 280;	//lowest/2
-	public double minPot = 140;	//highest
+	public double minPot = 150;	//highest
 	public double startPot = 139;
-	public double shootPot = 130;
+	public double shootPot = 146;
 	public double lowBarPot = 268;
 	public double intakePot = 283;
 	public double potTolerance = 5;
@@ -186,6 +187,12 @@ public class Constants {
 	//autonUltrasonicValue
 	//public double autonUltrasonicDistance = 100;
 	public double autonUltrasonicTolerance = 10;
+	
+	//autonGyroAngle
+	public double autonGyroAngleLeftLowGoal = 35;
+	public double autonGyroAngleLeftHighGoal = 38;
+	public double autonGyroAngleRightLowGoal = -30;
+	public double autonGyroTolerance = 1;
 	
     private Constants(){
 	   if(system == System_Type.Beta){
