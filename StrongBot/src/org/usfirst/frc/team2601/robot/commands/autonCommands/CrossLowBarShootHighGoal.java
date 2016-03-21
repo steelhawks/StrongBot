@@ -47,7 +47,6 @@ public class CrossLowBarShootHighGoal extends CommandGroup {
     	addSequential(new DriveSlowBackward(0.25));
     	//if(constants.shootOrNot == Shoot_Auton.Yes){
     	addSequential(new AutonRollerIntake(1.0));
-    	//Timer.delay(10.0);
     	addSequential(new AutonRollerShoot(1.5));
     	addSequential(new AutonRollerPiston(1.0));   	
     }
