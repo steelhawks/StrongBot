@@ -6,8 +6,11 @@ import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonDrivetrainToDrive
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonDrivetrainToDriverStationHighGoal;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnRight;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonGyroForwardDriverStation;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonLowBarForward;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnRightToHighGoal;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnRightToLowGoal;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.Delay;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastBackward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastForward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveSlowBackward;
@@ -34,20 +37,22 @@ public class CrossLowBarShootHighGoal extends CommandGroup {
 	Constants constants = Constants.getInstance();
 	
     public  CrossLowBarShootHighGoal() {
-    	
-    	
+    
     	addSequential(new MoveToLowBar());
     	addSequential(new AutonLowBarForward(1.75));
-    	addSequential(new MoveToFire());
-    	addSequential(new AutonDrivetrainToDriverStationHighGoal());
+    	addSequential(new MoveToStart());
     	//Timer.delay(1.0);
-    	//addSequential(new MoveToLowBar());
+    	//addSequential(new AutonDrivetrainToDriverStation());
+    	addSequential(new AutonGyroForwardDriverStation());
+    	//addSequential(new AutonGyroCorrection());
+    	//Timer.delay(1.0);
     	//addSequential(new AutonFastTurnRight(0.36));//0.5 90 degreee turn
-    	addSequential(new AutonTurnRightToLowGoal());
+    	addSequential(new AutonTurnRightToHighGoal());
     	addSequential(new DriveSlowBackward(0.25));
-    	//if(constants.shootOrNot == Shoot_Auton.Yes){
+    	addSequential(new MoveToFire());
     	addSequential(new AutonRollerIntake(1.0));
-    	addSequential(new AutonRollerShoot(1.5));
-    	addSequential(new AutonRollerPiston(1.0));   	
+    	addSequential(new Delay(1.0));
+    	addSequential(new AutonRollerShoot(0.25));
+    	addSequential(new AutonRollerPiston(1.0));
     }
 }

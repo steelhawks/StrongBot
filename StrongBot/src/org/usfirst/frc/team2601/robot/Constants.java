@@ -172,27 +172,29 @@ public class Constants {
 	public final double distancePerPulse = 0.5;
 	
 	//Potentiometer Shooter Pivot Values
-	public double maxPot = 280;	//lowest/2
-	public double minPot = 150;	//highest
-	public double startPot = 139;
-	public double shootPot = 146;
-	public double lowBarPot = 268;
-	public double intakePot = 283;
+	public double minPot = 235;	//highest
+	public double maxPot = minPot + 150;	//lowest/2
+	public double startPot = minPot;
+	public double shootPot = minPot + 20;//290 - 
+	public double lowBarPot = minPot + 140;
+	public double intakePot = minPot + 150;
 	public double potTolerance = 5;
 	
 	//Servo Pivot Values
 	public double maxServoAngle = 140;
 	public double minServoAngle = 90;
-
+	
 	//autonUltrasonicValue
 	//public double autonUltrasonicDistance = 100;
 	public double autonUltrasonicTolerance = 10;
 	
 	//autonGyroAngle
-	public double autonGyroAngleLeftLowGoal = 35;
-	public double autonGyroAngleLeftHighGoal = 38;
+	public double autonGyroCorrection = 0;
+	public double autonGyroAngleLeftLowGoal = 47;
+	public double autonGyroAngleLeftHighGoal = 52;
 	public double autonGyroAngleRightLowGoal = -30;
-	public double autonGyroTolerance = 1;
+	public double autonGyroAngleRightLowBar = -36;
+	public double autonGyroTolerance = 0.5;
 	
     private Constants(){
 	   if(system == System_Type.Beta){

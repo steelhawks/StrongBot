@@ -6,9 +6,11 @@ import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonFastTurnRight;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonForwardEncoder;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonGyroCorrection;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonGyroForward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonSlowTurnLeft;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonSlowTurnRight;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnLeftToLowGoal;
+import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnRightToHighGoal;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.AutonTurnRightToLowGoal;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastBackward;
 import org.usfirst.frc.team2601.robot.commands.drivetrain.DriveFastForward;
@@ -37,9 +39,12 @@ public class AutonTest extends CommandGroup {
     
     public  AutonTest() {
 
-    	addSequential(new AutonForwardEncoder());
-    	addSequential(new AutonBackwardEncoder());
-    	addSequential(new AutonGyroCorrection());
-    	addSequential(new GyroForward());
+    	//addSequential(new AutonForwardEncoder());
+    	//addSequential(new AutonBackwardEncoder());
+    	//addSequential(new AutonGyroForward(2.0));
+    	//addSequential(new AutonGyroCorrection());
+    	addSequential(new AutonTurnLeftToLowGoal());
+    	//addSequential(new AutonTurnRightToLowGoal());
+    	//addSequential(new AutonTurnRightToHighGoal());
     }
 }

@@ -27,6 +27,7 @@ import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootLow
 import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootTwoHighGoals;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.DoNothing;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.GyroForward;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.ShootHighGoalCrossLowBar;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.VisionAutonTest;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossChevalDeFriseShootHighGoalFive;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.five.CrossMoatShootHighGoalFive;
@@ -112,6 +113,7 @@ public class Robot extends IterativeRobot {
 
 	        chooser = new SendableChooser();
 	        
+	        chooser.addDefault("ShootHighGoalCrossLowBar", new ShootHighGoalCrossLowBar());
 	        chooser.addDefault("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
 	        chooser.addDefault("AutonTest", new AutonTest());
 	        chooser.addObject("CrossLowBarShootLowGoal", new CrossLowBarShootLowGoal());
@@ -120,7 +122,7 @@ public class Robot extends IterativeRobot {
 	        chooser.addObject("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
 	        chooser.addObject("AutonVision", new VisionAutonTest());
 	        chooser.addObject("NULL", new DoNothing());
-	        //chooser.addObject("CrossChevalDeFriseShootHighGoal5", new CrossChevalDeFriseShootHighGoalFive());
+	        chooser.addObject("CrossChevalDeFriseShootHighGoal5", new CrossChevalDeFriseShootHighGoalFive());
 	        chooser.addObject("CrossMoatShootHighGoal5", new CrossMoatShootHighGoalFive());
 	        chooser.addObject("CrossRampartsShootHighGoal5", new CrossRampartsShootHighGoalFive());
 	        chooser.addObject("CrossRockWallShootHighGoal5", new CrossRockWallShootHighGoalFive());

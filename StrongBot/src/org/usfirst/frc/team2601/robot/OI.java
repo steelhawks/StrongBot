@@ -55,14 +55,14 @@ public class OI {
 	    	//Button align = new JoystickButton(constants.stick, constants.alignButton);
 	    	//align.whenPressed(new AutoAlign());
 	    	
-	    	Button driverContinuousWheels = new JoystickButton(constants.stick, constants.driverContinouousWheelsButton);
-	   		driverContinuousWheels.whenPressed(new ContinuousShoot());
+	    	//Button driverContinuousWheels = new JoystickButton(constants.stick, constants.driverContinouousWheelsButton);
+	   		//driverContinuousWheels.whenPressed(new ContinuousShoot());
 	    	
-	    	Button driverPiston = new JoystickButton(constants.stick, constants.driverPistonButton);
-	    	driverPiston.whenPressed(new ContinuousPiston());
+	    	//Button driverPiston = new JoystickButton(constants.stick, constants.driverPistonButton);
+	    	//driverPiston.whenPressed(new ContinuousPiston());
 	    	
-	    	Button driverStopShoot= new JoystickButton(constants.stick, constants.driverStopShootButton);
-	    	driverStopShoot.whenPressed(new EStopShoot());
+	    	//Button driverStopShoot= new JoystickButton(constants.stick, constants.driverStopShootButton);
+	    	//driverStopShoot.whenPressed(new EStopShoot());
 	    
 	    //Operator Controls
 	    	Button triggerShooter = new JoystickButton(constants.shooter, constants.triggerShooterButton);
