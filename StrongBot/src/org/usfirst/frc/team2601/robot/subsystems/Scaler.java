@@ -49,7 +49,7 @@ public class Scaler extends Subsystem {
     	scale = !scale;
     }
     public void winchUp(Joystick stick){//twist brings winch up
-    	double move = stick.getTwist();
+    	double move = stick.getX();
     	winchMotor.set(move*constants.scaleSpeed);
     }
     public void shootGrapplingHook(){

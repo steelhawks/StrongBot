@@ -149,9 +149,9 @@ public class Constants {
 	public int potlowBarButton = 9;
 	public int potintakeButton = 11;
 	//public int switchScaleMotorsButton = 4;
-	//public int grapplingHook = 6;
-	public int ballCorrectionLeftButton = 10;
-	public int ballCorrectionRightButton = 12;
+	public int grapplingHook = 12;
+	//public int ballCorrectionLeftButton = 10;
+	//public int ballCorrectionRightButton = 12;
 	
 	//variables that shouldn't be in constants
 	//public boolean scale;//used to switch between the two motors
@@ -178,6 +178,7 @@ public class Constants {
 	public double shootPot = minPot + 20;//290 - 
 	public double lowBarPot = minPot + 140;
 	public double intakePot = minPot + 150;
+	public double portcullisPot = minPot + 150;
 	public double potTolerance = 5;
 	
 	//Servo Pivot Values
@@ -208,7 +209,7 @@ public class Constants {
 		    rightRollerTalon = 6;//right
 		    shooterPivotTalon = 0;//7
 		    
-		    winchTalon = 8;
+		    winchTalon = 7;
 		    
 		 //   armUpTalon = 1;//8
 		 //   armExtendTalon = 0;

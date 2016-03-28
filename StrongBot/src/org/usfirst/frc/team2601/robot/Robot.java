@@ -25,6 +25,7 @@ import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBar;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootHighGoal;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootLowGoal;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossLowBarShootTwoHighGoals;
+import org.usfirst.frc.team2601.robot.commands.autonCommands.CrossPortcullis;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.DoNothing;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.GyroForward;
 import org.usfirst.frc.team2601.robot.commands.autonCommands.ShootHighGoalCrossLowBar;
@@ -113,10 +114,10 @@ public class Robot extends IterativeRobot {
 
 	        chooser = new SendableChooser();
 	        
-	        chooser.addDefault("ShootHighGoalCrossLowBar", new ShootHighGoalCrossLowBar());
-	        chooser.addDefault("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
-	        chooser.addDefault("AutonTest", new AutonTest());
-	        chooser.addObject("CrossLowBarShootLowGoal", new CrossLowBarShootLowGoal());
+	        chooser.addObject("ShootHighGoalCrossLowBar", new ShootHighGoalCrossLowBar());
+	        chooser.addObject("CrossLowBarShootTwoHighGoals", new CrossLowBarShootTwoHighGoals());
+	        chooser.addObject("AutonTest", new AutonTest());
+	        chooser.addDefault("CrossLowBarShootLowGoal", new CrossLowBarShootLowGoal());
 	        chooser.addObject("Gyro Forward", new GyroForward());
 	        //chooser.addObject("LowBarCross", new CrossLowBar());
 	        chooser.addObject("CrossLowBarShootHighGoal", new CrossLowBarShootHighGoal());
@@ -127,6 +128,7 @@ public class Robot extends IterativeRobot {
 	        chooser.addObject("CrossRampartsShootHighGoal5", new CrossRampartsShootHighGoalFive());
 	        chooser.addObject("CrossRockWallShootHighGoal5", new CrossRockWallShootHighGoalFive());
 	        chooser.addObject("CrossRoughTerrainShootHighGoal5", new CrossRoughTerrainShootHighGoalFive());
+	        chooser.addObject("CrossPortcullis", new CrossPortcullis());
 	        //chooser.addObject("NULL", new DoNothing());
 	        //chooser.addObject("CrossChevalDeFriseShootHighGoal4", new CrossChevalDeFriseShootHighGoalFour());
 	        //chooser.addObject("CrossMoatShootHighGoal4", new CrossMoatShootHighGoalFour());

@@ -57,6 +57,7 @@ public class CombinedShooter extends Subsystem {
 	public boolean autonShotSecond;
 	public boolean intake;
 	public boolean lowBar;
+	public boolean portcullis;
 	public boolean autonStart = false;
 	//this is used for the logger
 	private ArrayList<HawkLoggable> loggingList = new ArrayList<HawkLoggable>();
@@ -241,6 +242,23 @@ public class CombinedShooter extends Subsystem {
     	}
 		SmartDashboard.putBoolean("PivotLowBar", lowBar);
     }
+    public void moveToPortcullis(){
+    	degrees = pot.get();
+    	if(degrees >= constants.portcullisPot - constants.potTolerance && degrees <= constants.portcullisPot + constants.potTolerance){
+    		shooterPivotMotor.set(0); 
+    		portcullis = true;
+    	}
+    	else if(degrees > constants.portcullisPot + constants.potTolerance){
+    		shooterPivotMotor.set(-constants.buttonPivotSpeed);
+    		portcullis = false;
+    	}
+    	else if(degrees < constants.portcullisPot - constants.potTolerance){
+    		shooterPivotMotor.set(constants.buttonPivotSpeed);
+    		portcullis = false;
+    	}
+		SmartDashboard.putBoolean("PivotLowBar", lowBar);
+    }
+    
     public void shooterPivotUp(){
     	shooterPivotMotor.set(constants.shooterPivotSpeed*constants.shooterPivotUpMultiplier); 
     }

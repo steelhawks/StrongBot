@@ -94,7 +94,8 @@ public class OI {
 	    	
 	    	Button rightBallCorrection = new JoystickButton(constants.shooter, constants.ballCorrectionRightButton);
 	    	rightBallCorrection.whileHeld(new RightBallCorrection());*/
-	    	//Button grapplingHook = new JoystickButton(constants.shooter, constants.grapplingHook);
-	    	//grapplingHook.whenPressed(new GrapplingHookPiston());
+	    	
+	    	Button grapplingHook = new JoystickButton(constants.shooter, constants.grapplingHook);
+	    	grapplingHook.whenPressed(new GrapplingHookPiston());
 	}
 }
